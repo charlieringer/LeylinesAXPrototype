@@ -30,6 +30,7 @@ AI ai;
 
 void setup()
 {
+    AXLog::logType = AX_LOG_FILE;
     Tile::loadTextures();
     int xOffset = 350;
     int yOffset = 100;
@@ -90,13 +91,12 @@ int main(int argc, char *argv[])
     //You can use axilya like a framework by passing the window update and draw methods
     if(!AXWindow::init(800, 600, "Leyline Prototype", AX_DEFAULT, update, draw)){
         AXLog::log("Window failed to initialise", "Quitting", AX_LOG_ERROR);
-    	return -1;
+        return -1;
     }
     setup();
     //return the window run, this is where the update and draw will be called
     return AXWindow::run();
 }
-
 int getNextTileValue()
 {
     float value = (float)rand() / RAND_MAX;
