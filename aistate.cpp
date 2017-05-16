@@ -13,7 +13,6 @@ AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _
 
 AIState::~AIState()
 {
-	if(parent) delete parent;
 	for(int i = children.size()-1; i >= 0 ; i--)
 	{
 		if(children[i]) delete children[i];

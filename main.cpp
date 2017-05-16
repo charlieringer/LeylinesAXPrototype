@@ -280,7 +280,6 @@ void runAI()
     board.clear();
     unpackState(newState);
     delete currentState;
-    delete newState;
 }
 
 void unpackState(AIState* newState)
