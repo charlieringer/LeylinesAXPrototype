@@ -66,16 +66,16 @@ void Tile::setDraggable(bool _dragable)
 
 void Tile::loadTextures()
 {
-	emptyTex = new AXTexture("images/0.jpg");
+	emptyTex = new AXTexture("images\\0.jpg");
 
-    minustwoTex = new AXTexture("images/1.jpg");
-    oneTex = new AXTexture("images/2.jpg");
-    twoTex = new AXTexture("images/3.jpg");
-    threeTex = new AXTexture("images/4.jpg");
-    fourTex = new AXTexture("images/5.jpg");
+    minustwoTex = new AXTexture("images\\1.jpg");
+    oneTex = new AXTexture("images\\2.jpg");
+    twoTex = new AXTexture("images\\3.jpg");
+    threeTex = new AXTexture("images\\4.jpg");
+    fourTex = new AXTexture("images\\5.jpg");
 
-    yourWhizTex = new AXTexture("images/6.jpg");
-    aiWhizTex = new AXTexture("images/7.jpg");
+    yourWhizTex = new AXTexture("images\\6.jpg");
+    aiWhizTex = new AXTexture("images\\7.jpg");
 }
 
 AXTexture* Tile::emptyTex = NULL;
