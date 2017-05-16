@@ -17,8 +17,7 @@ Tile::Tile(int _x, int _y, int _w, int _h)
 
 void Tile::display()
 {
-	fill(fillColour);
-	drawRect(x, y, w, h);
+	drawTexture(tex, x, y, w, h);
 }
 
 void Tile::setTileType(int _tileType)
@@ -27,35 +26,35 @@ void Tile::setTileType(int _tileType)
 	switch(tileType)
 	{
 		case(EMPTY):
-			fillColour.set(128,128,128,255);
+			tex = Tile::emptyTex;
 			break;
 
 		case(MINUSTWO):
-			fillColour.set(0,0,0,255);
+			tex = Tile::minustwoTex;
 			break;
 
 		case(ONE):
-			fillColour.set(50,255,255,255);
+			tex = Tile::oneTex;
 			break;
 
 		case(TWO):
-			fillColour.set(100,255,255,255);
+			tex = Tile::twoTex;
 			break;
 
 		case(THREE):
-			fillColour.set(150,255,255,255);
+			tex = Tile::threeTex;
 			break;
 
 		case(FOUR):
-			fillColour.set(200,255,255,255);
+			tex = Tile::fourTex;
 			break;
 
 		case(YOURWIZ):
-			fillColour.set(0,255,0,255);
+			tex = Tile::yourWhizTex;
 			break;
 
 		case(AIWIZ):
-			fillColour.set(0,0,255,255);
+			tex = Tile::aiWhizTex;
 			break;
 	}
 }
@@ -64,4 +63,27 @@ void Tile::setDraggable(bool _dragable)
 {
 	dragable = _dragable;
 }
+
+void Tile::loadTextures()
+{
+	emptyTex = new AXTexture("images/0.jpg");
+
+    minustwoTex = new AXTexture("images/1.jpg");
+    oneTex = new AXTexture("images/2.jpg");
+    twoTex = new AXTexture("images/3.jpg");
+    threeTex = new AXTexture("images/4.jpg");
+    fourTex = new AXTexture("images/5.jpg");
+
+    yourWhizTex = new AXTexture("images/6.jpg");
+    aiWhizTex = new AXTexture("images/7.jpg");
+}
+
+AXTexture* Tile::emptyTex = NULL;
+AXTexture* Tile::minustwoTex = NULL;
+AXTexture* Tile::oneTex = NULL;
+AXTexture* Tile::twoTex = NULL;
+AXTexture* Tile::threeTex = NULL;
+AXTexture* Tile::fourTex = NULL;
+AXTexture* Tile::yourWhizTex = NULL;
+AXTexture* Tile::aiWhizTex = NULL;
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <Axilya/AXMain.h>
+#include "main.h"
 using namespace AXGraphics;
 
 enum{
@@ -31,6 +32,7 @@ class Tile
 		int getY(){return y;};
 		int getType(){return tileType;};
 		bool containsPoint(int oX, int oY){return(oX > x && oX < x+w && oY > y && oY < y+h);};
+		static void loadTextures();
 
 	private:
 		int x = 0;
@@ -40,5 +42,14 @@ class Tile
 		bool beingDragged = false;
 		bool dragable;
 		int tileType;
-		AXColour fillColour;
+		AXTexture* tex;
+
+		static AXTexture* emptyTex;
+		static AXTexture* minustwoTex;
+		static AXTexture* oneTex;
+		static AXTexture* twoTex;
+		static AXTexture* threeTex;
+		static AXTexture* fourTex;
+		static AXTexture* yourWhizTex;
+		static AXTexture* aiWhizTex;
 };

@@ -30,6 +30,7 @@ AI ai;
 
 void setup()
 {
+    Tile::loadTextures();
     int xOffset = 350;
     int yOffset = 100;
     for(int i = 0; i < 5; i ++)
