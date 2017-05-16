@@ -7,7 +7,7 @@ ifeq ($(OS), Darwin)
 endif
 endif
 all:
-	@echo "Compiling Custom Update and Draw example"
+	@echo "Compiling Leylines Prototype”
 	@g++ *.cpp -std=c++11 -o Axilya -lAxilya -lcurl $(FLAGS)
 	@echo "Complete."
 run: all

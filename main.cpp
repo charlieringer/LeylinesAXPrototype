@@ -87,7 +87,7 @@ void draw(){
 int main(int argc, char *argv[])
 {
     //You can use axilya like a framework by passing the window update and draw methods
-    if(!AXWindow::init(800, 600, "Custom Update Draw", AX_DEFAULT, update, draw)){
+    if(!AXWindow::init(800, 600, "Leyline Prototype", AX_DEFAULT, update, draw)){
         AXLog::log("Window failed to initialise", "Quitting", AX_LOG_ERROR);
     	return -1;
     }
@@ -142,7 +142,7 @@ void handleDroppedTile()
     bool tilePlaced = false;
     for(int i = 0; i < board.size(); i++)
     {
-        if(board[i]->containsPoint(mX,mY))
+        if(board[i]->containsPoint(mX,mY) && board[i]->getType() == EMPTY)
         {
             board[i]->setTileType(selectedTile->getType());
             hand.erase(
@@ -160,6 +160,7 @@ void handleDroppedTile()
             tilePlaced = true;
             playersTurn = false;
             calculateGameScore();
+            numbPiecesPlayed++;
             break;
         }
     }
@@ -212,6 +213,7 @@ void calculateGameScore()
 
 void runAI()
 {
+    if(numbPiecesPlayed == 25) return;
     AXLog::debug("Running AI");
     vector<int> aiHandForState;
     vector<int> playerHandForState;
@@ -221,7 +223,7 @@ void runAI()
     for(int i = 0; i < hand.size();   i++) playerHandForState.push_back(hand[i]->getType());
     for(int i = 0; i < board.size();  i++) boardForState.push_back(board[i]->getType());
 
-    AIState* currentState = new AIState(0, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed);
+    AIState* currentState = new AIState(1, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed);
     AIState* newState = ai.run(currentState);
 
     for(int i = 0; i < aiHand.size(); i++) delete aiHand[i];
@@ -230,7 +232,6 @@ void runAI()
     aiHand.clear();
     hand.clear();
     board.clear();
-
     unpackState(newState);
 }
 

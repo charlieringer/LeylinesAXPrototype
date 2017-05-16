@@ -24,7 +24,8 @@ vector<AIState*> AIState::generateChildren ()
 				vector<int> currenthandcpy = currenthand;
 				vector<int> newboard = board;
 				newboard[j] = currenthandcpy[i];
-				currenthandcpy[i] = getNextTileValue();
+				if(currenthandcpy[i] < YOURWIZ) currenthandcpy[i] = getNextTileValue();
+				else currenthandcpy.erase(currenthandcpy.begin() +i);
 				AIState* newChild;
 				if(playerIndex == 0) newChild = new AIState(newPIndx, this, newboard, currenthandcpy, aihand, numbPiecesPlayed+1);
 				else newChild = new AIState(newPIndx, this, newboard, phand, currenthandcpy, numbPiecesPlayed+1);
