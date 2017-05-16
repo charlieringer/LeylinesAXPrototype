@@ -25,7 +25,7 @@ int selectedTileSY;
 bool playersTurn = true;
 int playerScore = 0;
 int aiScore = 0;
-int numbPiecesPlayed = 0;
+int numbPiecesPlayed = 1;
 AI ai;
 TextObject playerScoreText;
 TextObject aiScoreText;
@@ -56,6 +56,7 @@ void setup()
             board.push_back(tile);
         }
     }
+    board[12]->setTileType(getNextTileValue());
 
     for(int i = 0; i < 4; i++)
     {            
@@ -97,8 +98,9 @@ void update(){
         else runAI();
     } else {
         AXFont font("Arial.ttf", 40);
-        if(playerScore > aiScore) gameOver.setText("You Won!", font);
-        else gameOver.setText("You Lost!", font);
+        if(playerScore > aiScore) gameOver.setText("You Won! Click to replay.", font);
+        else  if (aiScore > playerScore) gameOver.setText("You Lost! Click to replay.", font);
+        else gameOver.setText("You Drew! Click to replay.", font);
         waitForReset(); 
     }
 
@@ -278,16 +280,16 @@ void runAI()
     aiHand.clear();
     hand.clear();
     board.clear();
-    unpackState(newState);
+    unpackState(*newState);
     delete currentState;
 }
 
-void unpackState(AIState* newState)
+void unpackState(AIState& newState)
 {
-    for(int i = 0; i < newState->aihand.size(); i++) 
+    for(int i = 0; i < newState.aihand.size(); i++) 
     {
         Tile* tile = new Tile();
-        tile->setTileType(newState->aihand[i]);
+        tile->setTileType(newState.aihand[i]);
         tile->setDraggable(false);
         aiHand.push_back(tile);
     }
@@ -295,13 +297,13 @@ void unpackState(AIState* newState)
     int latestWizX = 10;
     int latestTileX = 10;
 
-    for(int i = 0; i < newState->phand.size(); i++) 
+    for(int i = 0; i < newState.phand.size(); i++) 
     {
         Tile* tile = new Tile();
-        tile->setTileType(newState->phand[i]);
+        tile->setTileType(newState.phand[i]);
         tile->setDraggable(true);
 
-        if(newState->phand[i] == YOURWIZ)
+        if(newState.phand[i] == YOURWIZ)
         {
             tile->setX(latestWizX);
             tile->setY(400);
@@ -321,7 +323,7 @@ void unpackState(AIState* newState)
         for(int j = 0; j < 5; j ++)
         {
             Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
-            tile->setTileType(newState->board[i*5+j]);
+            tile->setTileType(newState.board[i*5+j]);
             tile->setDraggable(false);
             board.push_back(tile);
         }
@@ -333,5 +335,68 @@ void unpackState(AIState* newState)
 
 void waitForReset()
 {
+    if(AXInput::getValue("MB1"))
+    {
+        for(int i = 0; i < aiHand.size(); i++) delete aiHand[i];
+        for(int i = 0; i < hand.size(); i++) delete hand[i];
+        for(int i = 0; i < board.size();  i++) delete board[i];
+        numbPiecesPlayed = 1;
+        aiHand.clear();
+        hand.clear();
+        board.clear();
 
+        AXFont font("Arial.ttf", 20);
+        playersTurn = true;
+        playerScore = 0;
+        aiScore = 0;
+
+        playerScoreText.setText("Player Score: " + to_string(playerScore), font);
+        aiScoreText.setText("AI Score: " + to_string(aiScore), font);
+
+        int xOffset = 350;
+        int yOffset = 100;
+        for(int i = 0; i < 5; i ++)
+        {
+            for(int j = 0; j < 5; j ++)
+            {
+                Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
+                tile->setTileType(0);
+                tile->setDraggable(false);
+                board.push_back(tile);
+            }
+        }
+        board[12]->setTileType(getNextTileValue());
+
+        for(int i = 0; i < 4; i++)
+        {            
+            Tile* tile = new Tile(i*81+10, 500, 80, 80);
+            tile->setTileType(getNextTileValue());
+            tile->setDraggable(true);
+            hand.push_back(tile);
+        }
+
+        for(int i = 0; i < 3; i++)
+        {            
+            Tile* tile = new Tile(i*81+10, 400, 80, 80);
+            tile->setTileType(YOURWIZ);
+            tile->setDraggable(true);
+            hand.push_back(tile);
+        }
+
+        for(int i = 0; i < 4; i++)
+        {            
+            Tile* tile = new Tile();
+            tile->setTileType(getNextTileValue());
+            tile->setDraggable(true);
+            aiHand.push_back(tile);
+        }
+
+        for(int i = 0; i < 3; i++)
+        {            
+            Tile* tile = new Tile();
+            tile->setTileType(AIWIZ);
+            tile->setDraggable(true);
+            aiHand.push_back(tile);
+        }
+    }
 }
