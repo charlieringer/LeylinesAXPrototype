@@ -14,17 +14,20 @@ AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _
 vector<AIState*> AIState::generateChildren ()
 {
 	int newPIndx = playerIndex = 0 ? 1 : 0;
-	vector<int>* currenthand = (playerIndex == 0) ? &phand : &aihand;
+	vector<int> currenthand = (playerIndex == 0) ? phand : aihand;
 	for(int j = 0; j < board.size(); j++)
 	{
 		if(board[j] == EMPTY)
 		{
-			for(int i = 0; i < currenthand->size(); i++)
+			for(int i = 0; i < currenthand.size(); i++)
 			{
+				vector<int> currenthandcpy = currenthand;
 				vector<int> newboard = board;
-				newboard[j] = (*currenthand)[i];
-				(*currenthand)[i] = getNextTileValue();
-				AIState* newChild = new AIState(newPIndx, this, newboard, phand, aihand, numbPiecesPlayed+1);
+				newboard[j] = currenthandcpy[i];
+				currenthandcpy[i] = getNextTileValue();
+				AIState* newChild;
+				if(playerIndex == 0) newChild = new AIState(newPIndx, this, newboard, currenthandcpy, aihand, numbPiecesPlayed+1);
+				else newChild = new AIState(newPIndx, this, newboard, phand, currenthandcpy, numbPiecesPlayed+1);
 				children.push_back(newChild);
 			}
 		}

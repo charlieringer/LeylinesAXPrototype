@@ -7,10 +7,10 @@
 //
 #include <Axilya/AXMain.h>
 #include <algorithm>
-#include "main.h"
 #include "tile.h"
 #include "aistate.h"
 #include "ai.h"
+#include "main.h"
 
 using namespace std;
 
@@ -144,16 +144,13 @@ void handleDroppedTile()
     {
         if(board[i]->containsPoint(mX,mY))
         {
-            selectedTile->setDraggable(false);
-            selectedTile->setX(board[i]->getX());
-            selectedTile->setY(board[i]->getY());
-            board[i] = selectedTile;
+            board[i]->setTileType(selectedTile->getType());
             hand.erase(
                 remove_if( hand.begin(), hand.end(),
                     [](const Tile* tile){ return tile == selectedTile;}
                 ),hand.end());
             
-            if(selectedTile->getType() < 200)
+            if(selectedTile->getType() < YOURWIZ)
             {
                 Tile* tile = new Tile(selectedTileSX, selectedTileSY, 80, 80);
                 tile->setTileType(getNextTileValue());
@@ -225,42 +222,69 @@ void runAI()
     for(int i = 0; i < board.size();  i++) boardForState.push_back(board[i]->getType());
 
 
-    AIState* currentState = new AIState(1, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed);
+    AIState* currentState = new AIState(0, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed);
     AIState* newState = ai.run(currentState);
 
     for(int i = 0; i < aiHand.size(); i++) delete aiHand[i];
-    for(int i = 0; i < hand.size();   i++) delete hand[i];
+    for(int i = 0; i < hand.size(); i++) delete hand[i];
     for(int i = 0; i < board.size();  i++) delete board[i];
+    aiHand.clear();
+    hand.clear();
+    board.clear();
 
+    unpackState(newState);
+}
+
+void unpackState(AIState* newState)
+{
     for(int i = 0; i < newState->aihand.size(); i++) 
     {
         Tile* tile = new Tile();
         tile->setTileType(newState->aihand[i]);
         tile->setDraggable(false);
         aiHand.push_back(tile);
-
     }
+
+    int latestWizX = 10;
+    int latestTileX = 10;
+
     for(int i = 0; i < newState->phand.size(); i++) 
     {
         Tile* tile = new Tile();
         tile->setTileType(newState->phand[i]);
         tile->setDraggable(true);
+
+        if(newState->phand[i] == YOURWIZ)
+        {
+            tile->setX(latestWizX);
+            tile->setY(400);
+            latestWizX+=81;
+        } else {
+            tile->setX(latestTileX);
+            tile->setY(500);
+            latestTileX+=81;
+        }
+        tile->setWH(80);
+        AXLog::debug("Current Hand pos " + to_string(tile->getX()) + " " + to_string(tile->getY()));
         hand.push_back(tile);
     }
+    AXLog::debug("Player Hand length: " + to_string(hand.size()));
 
-    for(int i = 0; i < newState->board.size();  i++) 
-    {
-        Tile* tile = new Tile();
-        tile->setTileType(newState->board[i]);
-        tile->setDraggable(false);
-        board.push_back(tile);
-    }
+    int xOffset = 350;
+    int yOffset = 100;
+    for(int i = 0; i < 5; i ++)
+        for(int j = 0; j < 5; j ++)
+        {
+            Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
+            tile->setTileType(newState->board[i*5+j]);
+            tile->setDraggable(false);
+            board.push_back(tile);
+        }
 
     numbPiecesPlayed++;
     calculateGameScore();
     playersTurn = true;
-
-    delete currentState;
-    delete newState;
+    // delete currentState;
+    // delete newState;
 
 }
