@@ -106,6 +106,4 @@ void AI::rollout(AIState* rolloutStart)
     	delete rolloutStart->children[i]; 
     }
     rolloutStart->children.clear();
-
-
 }

@@ -64,11 +64,6 @@ float AIState::getScore()
 	if(playerIndex == 0) scoreDiff = aiScore-playerScore;
 	else scoreDiff = playerScore - aiScore;
 	float sigscore = 1.0/(1.0+exp(-scoreDiff));
-	// AXLog::debug("Recording an non-win/loss result of: " + to_string(sigscore));
-	// AXLog::debug("The current player is player " + to_string(playerIndex));
-	// AXLog::debug("Human scored " + to_string(playerScore));
-	// AXLog::debug("AI scored " + to_string(aiScore));
-
 	return sigscore;
 }
 

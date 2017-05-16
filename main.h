@@ -6,3 +6,6 @@ void calculateGameScore();
 void runAI();
 void unpackState(AIState& newState);
 void waitForReset();
+void makeAIHand();
+void makePlayerHand();
+void makeBoard();

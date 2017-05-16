@@ -44,36 +44,13 @@ void setup()
     aiScoreText.setText("AI Score: " + to_string(aiScore), font);
     aiThinking.setText("AI THINKING...", font);
 
-    int xOffset = 350;
-    int yOffset = 100;
-    for(int i = 0; i < 5; i ++)
-    {
-        for(int j = 0; j < 5; j ++)
-        {
-            Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
-            tile->setTileType(0);
-            tile->setDraggable(false);
-            board.push_back(tile);
-        }
-    }
-    board[12]->setTileType(getNextTileValue());
+    makeBoard();
+    makeAIHand();
+    makePlayerHand();
+}
 
-    for(int i = 0; i < 4; i++)
-    {            
-        Tile* tile = new Tile(i*81+10, 500, 80, 80);
-        tile->setTileType(getNextTileValue());
-        tile->setDraggable(true);
-        hand.push_back(tile);
-    }
-
-    for(int i = 0; i < 3; i++)
-    {            
-        Tile* tile = new Tile(i*81+10, 400, 80, 80);
-        tile->setTileType(YOURWIZ);
-        tile->setDraggable(true);
-        hand.push_back(tile);
-    }
-
+void makeAIHand()
+{
     for(int i = 0; i < 4; i++)
     {            
         Tile* tile = new Tile();
@@ -89,6 +66,43 @@ void setup()
         tile->setDraggable(true);
         aiHand.push_back(tile);
     }
+
+}
+
+void makePlayerHand()
+{
+    for(int i = 0; i < 4; i++)
+    {            
+        Tile* tile = new Tile(i*81+10, 500, 80, 80);
+        tile->setTileType(getNextTileValue());
+        tile->setDraggable(true);
+        hand.push_back(tile);
+    }
+
+    for(int i = 0; i < 3; i++)
+    {            
+        Tile* tile = new Tile(i*81+10, 400, 80, 80);
+        tile->setTileType(YOURWIZ);
+        tile->setDraggable(true);
+        hand.push_back(tile);
+    }
+}
+
+void makeBoard()
+{
+    int xOffset = 350;
+    int yOffset = 100;
+    for(int i = 0; i < 5; i ++)
+    {
+        for(int j = 0; j < 5; j ++)
+        {
+            Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
+            tile->setTileType(0);
+            tile->setDraggable(false);
+            board.push_back(tile);
+        }
+    }
+    board[12]->setTileType(getNextTileValue());
 }
 
 void update(){
@@ -116,13 +130,13 @@ void draw(){
 
     if(!playersTurn)
     {
-        fill(AXColour(255,255,255,255));
+        fill(AXColour(255,255,255,128));
         drawRectCenter(400, 300, 300, 100);
         aiThinking.displayCentered(400, 300);
     }
     if(numbPiecesPlayed == 25)
     {
-        fill(AXColour(255,255,255,255));
+        fill(AXColour(255,255,255,128));
         drawRectCenter(400, 300, 500, 200);
         gameOver.displayCentered(400, 300);
     }
@@ -353,50 +367,8 @@ void waitForReset()
         playerScoreText.setText("Player Score: " + to_string(playerScore), font);
         aiScoreText.setText("AI Score: " + to_string(aiScore), font);
 
-        int xOffset = 350;
-        int yOffset = 100;
-        for(int i = 0; i < 5; i ++)
-        {
-            for(int j = 0; j < 5; j ++)
-            {
-                Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
-                tile->setTileType(0);
-                tile->setDraggable(false);
-                board.push_back(tile);
-            }
-        }
-        board[12]->setTileType(getNextTileValue());
-
-        for(int i = 0; i < 4; i++)
-        {            
-            Tile* tile = new Tile(i*81+10, 500, 80, 80);
-            tile->setTileType(getNextTileValue());
-            tile->setDraggable(true);
-            hand.push_back(tile);
-        }
-
-        for(int i = 0; i < 3; i++)
-        {            
-            Tile* tile = new Tile(i*81+10, 400, 80, 80);
-            tile->setTileType(YOURWIZ);
-            tile->setDraggable(true);
-            hand.push_back(tile);
-        }
-
-        for(int i = 0; i < 4; i++)
-        {            
-            Tile* tile = new Tile();
-            tile->setTileType(getNextTileValue());
-            tile->setDraggable(true);
-            aiHand.push_back(tile);
-        }
-
-        for(int i = 0; i < 3; i++)
-        {            
-            Tile* tile = new Tile();
-            tile->setTileType(AIWIZ);
-            tile->setDraggable(true);
-            aiHand.push_back(tile);
-        }
+        makeBoard();
+        makeAIHand();
+        makePlayerHand();
     }
 }
