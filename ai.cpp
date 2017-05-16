@@ -69,9 +69,7 @@ void AI::rollout(AIState* rolloutStart)
     int rolloutStartResult = rolloutStart->getWinner();
     if (rolloutStartResult >= 0)
     {
-        //Add a win is it is a win, or a loss is a loss or otherwise a draw
-        if(rolloutStartResult == rolloutStart->playerIndex) rolloutStart->addScore(1);
-        else if(rolloutStartResult == (rolloutStart->playerIndex+1)%2) rolloutStart->addScore(0);
+        rolloutStart->addScore(rolloutStart->getScore());
         return;
     }
     bool terminalStateFound = false;
@@ -96,19 +94,18 @@ void AI::rollout(AIState* rolloutStart)
         if(endResult >= 0)
         {
             terminalStateFound = true;
-            if (endResult == 2) rolloutStart->addScore(0.5);
-            //If it is a win add a win
-            else if(endResult == rolloutStart->playerIndex) rolloutStart->addScore(1);
-            //Else add a loss
-            else rolloutStart->addScore(0);
+            rolloutStart->addScore(rolloutStart->getScore());
         } else {
             //Otherwise select that nodes as the childern and continue
             children = children [index]->generateChildren();
         }
     }
-    // //Reset the children as these are not 'real' children but just ones for the roll out.
-    // foreach( AIState child in rolloutStart.children)
-    // {
-    //     child.children = new List<AIState>();
-    // }
+    //Reset the children as these are not 'real' children but just ones for the roll out.
+    for(int i = 0; i < rolloutStart->children.size(); i++)
+    {
+    	delete rolloutStart->children[i]; 
+    }
+    rolloutStart->children.clear();
+
+
 }

@@ -42,4 +42,5 @@ class AIState
 		vector<AIState*> generateChildren ();
 		int getWinner ();
 		void calculateGameScore();
+		float getScore();
 };

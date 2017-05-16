@@ -13,7 +13,7 @@ AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _
 
 vector<AIState*> AIState::generateChildren ()
 {
-	int newPIndx = playerIndex = 0 ? 1 : 0;
+	int newPIndx = (playerIndex == 0) ? 1 : 0;
 	vector<int> currenthand = (playerIndex == 0) ? phand : aihand;
 	for(int j = 0; j < board.size(); j++)
 	{
@@ -43,6 +43,21 @@ int AIState::getWinner ()
 	else if (aiScore > playerScore) return 1;
 	return 2;
 
+}
+
+float AIState::getScore()
+{
+	int result = getWinner();
+	if(result == playerIndex) return 1;
+	if(result == (playerIndex+1)%2) return 0;
+
+	float scoreDiff;
+
+	if(playerIndex == 0) scoreDiff = playerScore-aiScore;
+	else scoreDiff = aiScore - playerScore;
+	float sigscore = 1.0/1.0+exp(-scoreDiff);
+
+	return sigscore;
 }
 
 void AIState::calculateGameScore()
