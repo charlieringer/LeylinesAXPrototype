@@ -14,7 +14,7 @@ AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _
 vector<AIState*> AIState::generateChildren ()
 {
 	int newPIndx = (playerIndex == 0) ? 1 : 0;
-	vector<int> currenthand = (playerIndex == 0) ? phand : aihand;
+	vector<int> currenthand = (playerIndex == 0) ? aihand : phand;
 	for(int j = 0; j < board.size(); j++)
 	{
 		if(board[j] == EMPTY)

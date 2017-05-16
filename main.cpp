@@ -224,7 +224,7 @@ void runAI()
     for(int i = 0; i < hand.size();   i++) playerHandForState.push_back(hand[i]->getType());
     for(int i = 0; i < board.size();  i++) boardForState.push_back(board[i]->getType());
 
-    AIState* currentState = new AIState(1, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed);
+    AIState* currentState = new AIState(0, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed);
     AIState* newState = ai.run(currentState);
 
     for(int i = 0; i < aiHand.size(); i++) delete aiHand[i];

@@ -74,7 +74,6 @@ void Tile::setDraggable(bool _dragable)
 
 void Tile::loadTextures()
 {
-	system("pwd");
 	emptyTex->loadImage("images/0.jpg");
 
     minustwoTex->loadImage("images/1.jpg");
