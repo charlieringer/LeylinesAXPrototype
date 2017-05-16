@@ -51,6 +51,7 @@ AIState*  AI::run(AIState* initialState)
     for(int i = 0; i < initialState->children.size(); i++)
     {
         //Find the one that was played the most (this is the best move as we are selecting the robust child)
+        //AXLog::debug("Potential Move " + to_string(i) + " Wins: " + to_string(initialState->children[i]->wins) + " Total Games:" + to_string(initialState->children[i]->totGames));
         int games = initialState->children[i]->totGames;
         if(games >= mostGames)
         {
@@ -83,8 +84,7 @@ void AI::rollout(AIState* rolloutStart)
         loopCount++;
         //If max roll out is hit or no childern were generated
         if (loopCount >= maxRollout || children.size() == 0) {
-            //Record a draw
-            rolloutStart->addScore (0.5);
+            rolloutStart->addScore (rolloutStart->getScore());
             break;
         }
         //Get a random child index

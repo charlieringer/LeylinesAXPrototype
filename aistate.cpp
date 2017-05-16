@@ -14,7 +14,7 @@ AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _
 vector<AIState*> AIState::generateChildren ()
 {
 	int newPIndx = (playerIndex == 0) ? 1 : 0;
-	vector<int> currenthand = (playerIndex == 0) ? aihand : phand;
+	vector<int> currenthand = (playerIndex == 0) ? phand : aihand;
 	for(int j = 0; j < board.size(); j++)
 	{
 		if(board[j] == EMPTY)
@@ -38,8 +38,8 @@ vector<AIState*> AIState::generateChildren ()
 
 int AIState::getWinner ()
 {
-	if(numbPiecesPlayed < 25) return -1;
 	calculateGameScore();
+	if(numbPiecesPlayed < 25) return -1;
 	if(playerScore > aiScore) return 0;
 	else if (aiScore > playerScore) return 1;
 	return 2;
@@ -49,14 +49,17 @@ int AIState::getWinner ()
 float AIState::getScore()
 {
 	int result = getWinner();
-	if(result == playerIndex) return 1;
-	if(result == (playerIndex+1)%2) return 0;
+	if(result >= 0 && result < 2) return (result+1)%2;
 
 	float scoreDiff;
 
-	if(playerIndex == 0) scoreDiff = playerScore-aiScore;
-	else scoreDiff = aiScore - playerScore;
-	float sigscore = 1.0/1.0+exp(-scoreDiff);
+	if(playerIndex == 0) scoreDiff = aiScore-playerScore;
+	else scoreDiff = playerScore - aiScore;
+	float sigscore = 1.0/(1.0+exp(-scoreDiff));
+	// AXLog::debug("Recording an non-win/loss result of: " + to_string(sigscore));
+	// AXLog::debug("The current player is player " + to_string(playerIndex));
+	// AXLog::debug("Human scored " + to_string(playerScore));
+	// AXLog::debug("AI scored " + to_string(aiScore));
 
 	return sigscore;
 }

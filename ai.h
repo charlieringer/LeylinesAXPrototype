@@ -8,7 +8,7 @@ using namespace std;
 class AI
 {
 	private:
-	    int numbSimulations = 100;
+	    int numbSimulations = 1000;
         double exploreWeight = 1.45;
         int maxRollout = 5;
 
