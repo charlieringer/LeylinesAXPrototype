@@ -1,4 +1,4 @@
-Prototype of Leylines in Axyila
+Prototype of Leylines in Axilya
 ---------------------------
 
 Build & Run
@@ -18,7 +18,7 @@ How to play
 - Your total score is the score for all Wizards.
 - The game end when the board is full, most points wins
 
-Axyila
+Axilya
 ------
 - This game is made using Axylia
 - Check it out here: https://github.com/vexparadox/Axilya
