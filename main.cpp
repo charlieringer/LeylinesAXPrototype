@@ -29,6 +29,8 @@ int numbPiecesPlayed = 0;
 AI ai;
 TextObject playerScoreText;
 TextObject aiScoreText;
+TextObject aiThinking;
+TextObject gameOver;
 
 
 
@@ -40,6 +42,7 @@ void setup()
 
     playerScoreText.setText("Player Score: " + to_string(playerScore), font);
     aiScoreText.setText("AI Score: " + to_string(aiScore), font);
+    aiThinking.setText("AI THINKING...", font);
 
     int xOffset = 350;
     int yOffset = 100;
@@ -88,16 +91,40 @@ void setup()
 }
 
 void update(){
-    if(playersTurn) checkUserInput();
-    else runAI();
+    if(numbPiecesPlayed < 25)
+    {
+        if(playersTurn) checkUserInput();
+        else runAI();
+    } else {
+        AXFont font("Arial.ttf", 40);
+        if(playerScore > aiScore) gameOver.setText("You Won!", font);
+        else gameOver.setText("You Lost!", font);
+        waitForReset(); 
+    }
+
 }
 
 void draw(){
     setBackground(100,150,75,0);
     playerScoreText.display(10,10);
     aiScoreText.display(10,50);
+
     for(int i = 0; i < board.size(); i++)board[i]->display();
     for(int i = 0; i < hand.size(); i++) hand[i]->display();
+
+    if(!playersTurn)
+    {
+        fill(AXColour(255,255,255,255));
+        drawRectCenter(400, 300, 300, 100);
+        aiThinking.displayCentered(400, 300);
+    }
+    if(numbPiecesPlayed == 25)
+    {
+        fill(AXColour(255,255,255,255));
+        drawRectCenter(400, 300, 500, 200);
+        gameOver.displayCentered(400, 300);
+    }
+
 }
 
 int main(int argc, char *argv[])
@@ -117,7 +144,7 @@ int getNextTileValue()
     if(value < 0.1) return -2;
     if(value < 0.2) return 4;
     if(value < 0.4) return 3;
-    if(value < 0.6) return 2;
+    if(value < 0.7) return 2;
     return 1;
 }
 
@@ -233,7 +260,6 @@ void calculateGameScore()
 void runAI()
 {
     if(numbPiecesPlayed == 25) return;
-    AXLog::debug("Running AI");
     vector<int> aiHandForState;
     vector<int> playerHandForState;
     vector<int> boardForState;
@@ -303,5 +329,10 @@ void unpackState(AIState* newState)
     playersTurn = true;
     // delete currentState;
     // delete newState;
+
+}
+
+void waitForReset()
+{
 
 }
