@@ -211,6 +211,7 @@ void handleDroppedTile()
         selectedTile->setX(selectedTileSX);
         selectedTile->setY(selectedTileSY);
     }
+    selectedTile = nullptr;
 }
 
 void calculateGameScore()
@@ -278,6 +279,8 @@ void runAI()
     hand.clear();
     board.clear();
     unpackState(newState);
+    delete currentState;
+    delete newState;
 }
 
 void unpackState(AIState* newState)
@@ -327,9 +330,6 @@ void unpackState(AIState* newState)
     numbPiecesPlayed++;
     calculateGameScore();
     playersTurn = true;
-    // delete currentState;
-    // delete newState;
-
 }
 
 void waitForReset()

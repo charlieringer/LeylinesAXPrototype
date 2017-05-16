@@ -11,6 +11,15 @@ AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _
 	numbPiecesPlayed = _numbPiecesPlayed;
 }
 
+AIState::~AIState()
+{
+	//if(parent) delete parent;
+	// for(int i = 0; i < children.size(); i++)
+	// {
+	// 	delete children[i];
+	// }
+}
+
 vector<AIState*> AIState::generateChildren ()
 {
 	int newPIndx = (playerIndex == 0) ? 1 : 0;

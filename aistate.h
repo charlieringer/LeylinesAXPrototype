@@ -29,6 +29,7 @@ class AIState
 	
 	    //All of the constructors
 	    AIState();
+	    ~AIState();
 	    AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _phand, vector<int> _aihand, int _numbPiecesPlayed);
 
 		//For adding score
