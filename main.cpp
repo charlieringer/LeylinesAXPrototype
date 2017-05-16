@@ -11,6 +11,7 @@
 #include "aistate.h"
 #include "ai.h"
 #include "main.h"
+#include "text.h"
 
 using namespace std;
 
@@ -26,14 +27,24 @@ int playerScore = 0;
 int aiScore = 0;
 int numbPiecesPlayed = 0;
 AI ai;
+TextObject playerScoreText;
+TextObject aiScoreText;
+
 
 
 void setup()
 {
+    srand (time(NULL));
+    AXFont font("Arial.ttf", 20);
     Tile::loadTextures();
+
+    playerScoreText.setText("Player Score: " + to_string(playerScore), font);
+    aiScoreText.setText("AI Score: " + to_string(aiScore), font);
+
     int xOffset = 350;
     int yOffset = 100;
     for(int i = 0; i < 5; i ++)
+    {
         for(int j = 0; j < 5; j ++)
         {
             Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
@@ -41,6 +52,7 @@ void setup()
             tile->setDraggable(false);
             board.push_back(tile);
         }
+    }
 
     for(int i = 0; i < 4; i++)
     {            
@@ -82,6 +94,8 @@ void update(){
 
 void draw(){
     setBackground(100,150,75,0);
+    playerScoreText.display(10,10);
+    aiScoreText.display(10,50);
     for(int i = 0; i < board.size(); i++)board[i]->display();
     for(int i = 0; i < hand.size(); i++) hand[i]->display();
 }
@@ -209,7 +223,11 @@ void calculateGameScore()
     }
     playerScore = latestPlayerScore;
     aiScore = latestAIScore;
-    AXLog::debug("Player Score: " + to_string(playerScore) + " AI Score: " + to_string(aiScore));
+
+    AXFont font("Arial.ttf", 20);
+    playerScoreText.setText("Player Score: " + to_string(playerScore), font);
+    aiScoreText.setText("AI Score: " + to_string(aiScore), font);
+    //AXLog::debug("Player Score: " + to_string(playerScore) + " AI Score: " + to_string(aiScore));
 }
 
 void runAI()
