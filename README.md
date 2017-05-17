@@ -19,6 +19,12 @@ How to play
 - Your total score is the score for all Wizards.
 - The game end when the board is full, most points wins
 
+The AI
+------
+- The AI uses MCTS with short rollouts for speed 
+- It then uses the score at the end of the rollout as a scoring hueristic (the sigmoid 0f the difference in scores)
+- It also used an epsilon-greedy rollout policy to quide it to strong choices faster
+
 Axilya
 ------
 - This game is made using Axylia
