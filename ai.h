@@ -12,9 +12,12 @@ class AI
 	    int numbSimulations = 500;
         double exploreWeight = 1.45;
         int maxRollout = 8;
+        int minpruneamount = 5;
+        float pruneworst = 0.25;
         AIState*  selectBestMove(AIState* initialState);
         void rollout(AIState* rolloutStart);
         void removeRolloutChildren(AIState* rolloutStart);	
+        void prune(AIState* state);
 
 	public:
 		AIState* run(AIState* initialState);

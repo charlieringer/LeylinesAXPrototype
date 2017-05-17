@@ -1,9 +1,7 @@
 //
-//  main.cpp
-//  Axilya
-//
-//  Created by William Meaton on 31/01/2017.
-//  Copyright © 2017 willmeaton.com. All rights reserved.
+//  Leylines protoype - Charlie Ringer - Copyright © 2017 cring002.github.io. All rights reserved.
+//  
+//  Axilya used with an MIT License - github.com/vexparadox/axilya
 //
 #include <Axilya/AXMain.h>
 #include <algorithm>
@@ -31,8 +29,6 @@ TextObject playerScoreText;
 TextObject aiScoreText;
 TextObject aiThinking;
 TextObject gameOver;
-
-
 
 void setup()
 {
@@ -276,7 +272,6 @@ void calculateGameScore()
     AXFont font("Arial.ttf", 20);
     playerScoreText.setText("Player Score: " + to_string(playerScore), font);
     aiScoreText.setText("AI Score: " + to_string(aiScore), font);
-    //AXLog::debug("Player Score: " + to_string(playerScore) + " AI Score: " + to_string(aiScore));
 }
 
 void runAI()

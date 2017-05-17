@@ -79,6 +79,7 @@ float AIState::getHueristicScore()
 	if(playerIndex == 0) scoreDiff = hscores[0]-hscores[1];
 	else scoreDiff = hscores[1] - hscores[0];
 	float sigscore = 1.0/(1.0+exp(-scoreDiff));
+	hscore = sigscore;
 	return sigscore;
 }
 

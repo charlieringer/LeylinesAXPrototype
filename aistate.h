@@ -22,6 +22,10 @@ class AIState
 		int playerScore = 0;
 		int numbPiecesPlayed = 0;
 
+		float hscore;
+
+		bool pruned = false;
+
 		vector<int> board; 
 		vector<int> phand;
 		vector<int> aihand;
