@@ -144,13 +144,13 @@ void AI::prune(AIState* state)
 {
     state->pruned = true;
     int totNumbChildren = state->children.size();
-    if(totNumbChildren < minpruneamount)
+    if(totNumbChildren < minpruneamount|| pruneworst == 0)
     {
         return;
     }
 
     //Sort children...
-    sort(state->children.begin(), state->children.end(), [](AIState* a, AIState* b){return a->hscore > b->hscore;});
+    sort(state->children.begin(), state->children.end(), [](AIState* a, AIState* b){return a->hscore < b->hscore;});
     int numbToRemove = floor(totNumbChildren*pruneworst);
     state->children.erase(state->children.begin()+numbToRemove, state->children.end()); 
 

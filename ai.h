@@ -9,10 +9,10 @@ class AI
 {
 	private:
 		float eps = 0.25;
-	    int numbSimulations = 500;
+	    int numbSimulations = 400;
         double exploreWeight = 1.45;
         int maxRollout = 8;
-        int minpruneamount = 5;
+        int minpruneamount = 10;
         float pruneworst = 0.25;
         AIState*  selectBestMove(AIState* initialState);
         void rollout(AIState* rolloutStart);
