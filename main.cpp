@@ -157,10 +157,10 @@ int main(int argc, char *argv[])
 int getNextTileValue()
 {
     float value = (float)rand() / RAND_MAX;
-    if(value < 0.1) return -2;
-    if(value < 0.2) return 4;
-    if(value < 0.4) return 3;
-    if(value < 0.7) return 2;
+    if(value < 0.15) return -2;
+    if(value < 0.3) return 4;
+    if(value < 0.5) return 3;
+    if(value < 0.75) return 2;
     return 1;
 }
 
@@ -303,7 +303,8 @@ void unpackState(AIState& newState)
     for(int i = 0; i < newState.aihand.size(); i++) 
     {
         Tile* tile = new Tile();
-        tile->setType(newState.aihand[i]);
+        if(newState.aihand[i] != UNKNOWN) tile->setType(newState.aihand[i]);
+        else tile->setType(getNextTileValue());
         tile->setDraggable(false);
         aiHand.push_back(tile);
     }
@@ -314,7 +315,9 @@ void unpackState(AIState& newState)
     for(int i = 0; i < newState.phand.size(); i++) 
     {
         Tile* tile = new Tile();
-        tile->setType(newState.phand[i]);
+        if(newState.phand[i] != UNKNOWN) tile->setType(newState.phand[i]);
+        else tile->setType(getNextTileValue());
+
         tile->setDraggable(true);
 
         if(newState.phand[i] == YOURWIZ)

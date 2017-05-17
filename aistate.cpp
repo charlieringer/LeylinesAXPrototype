@@ -32,7 +32,7 @@ vector<AIState*> AIState::generateChildren ()
 				vector<int> currenthandcpy = currenthand;
 				vector<int> newboard = board;
 				newboard[j] = currenthandcpy[i];
-				if(currenthandcpy[i] < YOURWIZ) currenthandcpy[i] = getNextTileValue();
+				if(currenthandcpy[i] < YOURWIZ) currenthandcpy[i] = UNKNOWN;
 				else currenthandcpy.erase(currenthandcpy.begin() +i);
 				AIState* newChild;
 				if(playerIndex == 0) newChild = new AIState(newPIndx, this, newboard, currenthandcpy, aihand, numbPiecesPlayed+1);
@@ -71,10 +71,17 @@ void AIState::calculateGameScore()
 {
     int latestPlayerScore = 0;
     int latestAIScore = 0;
+    vector<int> scoreBoard = board;
 
-    for(int i = 0; i < board.size(); i++)
+    //First replace all unknowns with random values
+    for(int i = 0; i < scoreBoard.size(); i++)
     {
-        if(board[i] == YOURWIZ)
+    	if(scoreBoard[i] == UNKNOWN) scoreBoard[i] = getNextTileValue();
+    }
+
+    for(int i = 0; i < scoreBoard.size(); i++)
+    {
+        if(scoreBoard[i] == YOURWIZ)
         {
             int rowStart = i-(i%5);
             int colStart = i%5;
@@ -83,11 +90,11 @@ void AIState::calculateGameScore()
                 int currentHozIndx = rowStart+i;
                 int currentVertIndx = colStart+(i*5);
 
-                if(board[currentHozIndx]  < YOURWIZ) latestPlayerScore+=board[currentHozIndx];
-                if(board[currentVertIndx] < YOURWIZ) latestPlayerScore+=board[currentVertIndx];
+                if(scoreBoard[currentHozIndx]  < YOURWIZ) latestPlayerScore+=scoreBoard[currentHozIndx];
+                if(scoreBoard[currentVertIndx] < YOURWIZ) latestPlayerScore+=scoreBoard[currentVertIndx];
             }
 
-        } else if (board[i] == AIWIZ)
+        } else if (scoreBoard[i] == AIWIZ)
         {
             int rowStart = i-(i%5);
             int colStart = i%5;
@@ -96,8 +103,8 @@ void AIState::calculateGameScore()
                 int currentHozIndx = rowStart+i;
                 int currentVertIndx = colStart+(i*5);
 
-                if(board[currentHozIndx] < YOURWIZ) latestAIScore+=board[currentHozIndx];
-                if(board[currentVertIndx] < YOURWIZ) latestAIScore+=board[currentVertIndx];
+                if(scoreBoard[currentHozIndx] < YOURWIZ) latestAIScore+=scoreBoard[currentHozIndx];
+                if(scoreBoard[currentVertIndx] < YOURWIZ) latestAIScore+=scoreBoard[currentVertIndx];
             }
 
         }
