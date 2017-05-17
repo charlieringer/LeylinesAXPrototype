@@ -74,7 +74,7 @@ void AI::rollout(AIState* rolloutStart)
     int rolloutStartResult = rolloutStart->getWinner();
     if (rolloutStartResult >= 0)
     {
-        rolloutStart->addScore(rolloutStart->getScore());
+        rolloutStart->addScore(rolloutStart->getHueristicScore());
         return;
     }
     bool terminalStateFound = false;
@@ -89,7 +89,7 @@ void AI::rollout(AIState* rolloutStart)
         loopCount++;
         //If max roll out is hit or no childern were generated
         if (loopCount >= maxRollout || children.size() == 0) {
-            rolloutStart->addScore (latest->getScore());
+            rolloutStart->addScore (latest->getHueristicScore());
             break;
         }
 
@@ -102,10 +102,10 @@ void AI::rollout(AIState* rolloutStart)
             int bestIndex = 0;
             for(int i = 0; i < children.size(); i ++)
             {
-                if(children[i]->getScore() > bestScore)
+                if(children[i]->getHueristicScore() > bestScore)
                 {
                     bestIndex = i;
-                    bestScore = children[i]->getScore();
+                    bestScore = children[i]->getHueristicScore();
                 }
             }
             index = bestIndex;
@@ -118,7 +118,7 @@ void AI::rollout(AIState* rolloutStart)
         if(endResult >= 0)
         {
             terminalStateFound = true;
-            rolloutStart->addScore(latest->getScore());
+            rolloutStart->addScore(latest->getHueristicScore());
         } else {
             latest = children [index];
             //Otherwise select that nodes as the childern and continue

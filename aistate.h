@@ -44,4 +44,6 @@ class AIState
 		int getWinner ();
 		void calculateGameScore();
 		float getScore();
+		float getHueristicScore();
+		vector<int> calculateHueristicScores();
 };

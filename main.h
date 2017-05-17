@@ -9,3 +9,4 @@ void waitForReset();
 void makeAIHand();
 void makePlayerHand();
 void makeBoard();
+int getTileHScore();

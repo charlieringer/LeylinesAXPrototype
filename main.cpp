@@ -164,6 +164,11 @@ int getNextTileValue()
     return 1;
 }
 
+int getTileHScore()
+{
+    return 1;
+}
+
 void checkUserInput()
 {
     int mX = AXInput::mouseX;
