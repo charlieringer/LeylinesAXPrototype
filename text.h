@@ -12,5 +12,5 @@ class TextObject
 	public:
 		void display(int x, int y);
 		void displayCentered(int x, int y);
-		void setText(string _text, AXFont &font);
+		void setText(string _text, AXFont* font);
 };

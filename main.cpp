@@ -29,16 +29,19 @@ TextObject playerScoreText;
 TextObject aiScoreText;
 TextObject aiThinking;
 TextObject gameOver;
+AXFont* smallFont;
+AXFont* bigFont;
 
 void setup()
 {
     srand (time(NULL));
-    AXFont font("Arial.ttf", 20);
+    smallFont = new AXFont("data/Arial.ttf", 20);
+    bigFont = new AXFont("data/Arial.ttf", 40);
     Tile::loadTextures();
 
-    playerScoreText.setText("Player Score: " + to_string(playerScore), font);
-    aiScoreText.setText("AI Score: " + to_string(aiScore), font);
-    aiThinking.setText("AI THINKING...", font);
+    playerScoreText.setText("Player Score: " + to_string(playerScore), smallFont);
+    aiScoreText.setText("AI Score: " + to_string(aiScore), smallFont);
+    aiThinking.setText("AI THINKING...", smallFont);
 
     makeBoard();
     makeAIHand();
@@ -107,10 +110,9 @@ void update(){
         if(playersTurn) checkUserInput();
         else runAI();
     } else {
-        AXFont font("Arial.ttf", 40);
-        if(playerScore > aiScore) gameOver.setText("You Won! Click to replay.", font);
-        else  if (aiScore > playerScore) gameOver.setText("You Lost! Click to replay.", font);
-        else gameOver.setText("You Drew! Click to replay.", font);
+        if(playerScore > aiScore) gameOver.setText("You Won! Click to replay.", bigFont);
+        else  if (aiScore > playerScore) gameOver.setText("You Lost! Click to replay.", bigFont);
+        else gameOver.setText("You Drew! Click to replay.", bigFont);
         waitForReset(); 
     }
 
@@ -269,9 +271,8 @@ void calculateGameScore()
     playerScore = latestPlayerScore;
     aiScore = latestAIScore;
 
-    AXFont font("Arial.ttf", 20);
-    playerScoreText.setText("Player Score: " + to_string(playerScore), font);
-    aiScoreText.setText("AI Score: " + to_string(aiScore), font);
+    playerScoreText.setText("Player Score: " + to_string(playerScore), smallFont);
+    aiScoreText.setText("AI Score: " + to_string(aiScore), smallFont);
 }
 
 void runAI()
@@ -362,13 +363,12 @@ void waitForReset()
         hand.clear();
         board.clear();
 
-        AXFont font("Arial.ttf", 20);
         playersTurn = true;
         playerScore = 0;
         aiScore = 0;
 
-        playerScoreText.setText("Player Score: " + to_string(playerScore), font);
-        aiScoreText.setText("AI Score: " + to_string(aiScore), font);
+        playerScoreText.setText("Player Score: " + to_string(playerScore), smallFont);
+        aiScoreText.setText("AI Score: " + to_string(aiScore), smallFont);
 
         makeBoard();
         makeAIHand();
