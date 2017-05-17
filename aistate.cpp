@@ -64,7 +64,7 @@ float AIState::getScore()
 	if(playerIndex == 0) scoreDiff = aiScore-playerScore;
 	else scoreDiff = playerScore - aiScore;
 	float sigscore = 1.0/(1.0+exp(-scoreDiff));
-	return sigscore;
+	return 1-sigscore;
 }
 
 void AIState::calculateGameScore()

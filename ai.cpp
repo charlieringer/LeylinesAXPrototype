@@ -43,7 +43,11 @@ AIState*  AI::run(AIState* initialState)
         //Finally roll out this node.
         rollout(bestNode);
     }
+    return selectBestMove(initialState);
+}
 
+AIState* AI::selectBestMove(AIState* initialState)
+{
     //Onces all the simulations have taken place we select the best move...
     int mostGames = -1;
     int bestMove = -1;
@@ -74,6 +78,7 @@ void AI::rollout(AIState* rolloutStart)
         return;
     }
     bool terminalStateFound = false;
+    AIState* latest = rolloutStart;
     //Get the children
     vector<AIState*> children = rolloutStart->generateChildren();
 
@@ -84,26 +89,52 @@ void AI::rollout(AIState* rolloutStart)
         loopCount++;
         //If max roll out is hit or no childern were generated
         if (loopCount >= maxRollout || children.size() == 0) {
-            rolloutStart->addScore (rolloutStart->getScore());
+            rolloutStart->addScore (latest->getScore());
             break;
         }
-        //Get a random child index
-        int index = rand() % children.size();
+
+        int index;
+        float p = rand()/RAND_MAX;
+
+        if(p < eps)
+        {
+            int bestScore = -INFINITY;
+            int bestIndex = 0;
+            for(int i = 0; i < children.size(); i ++)
+            {
+                if(children[i]->getScore() > bestScore)
+                {
+                    bestIndex = i;
+                    bestScore = children[i]->getScore();
+                }
+            }
+            index = bestIndex;
+        } else {
+            //Get a random child index
+            index = rand() % children.size();
+        }
         //and see if that node is terminal
         int endResult = children[index]->getWinner ();
         if(endResult >= 0)
         {
             terminalStateFound = true;
-            rolloutStart->addScore(rolloutStart->getScore());
+            rolloutStart->addScore(latest->getScore());
         } else {
+            latest = children [index];
             //Otherwise select that nodes as the childern and continue
             children = children [index]->generateChildren();
+
         }
     }
+    removeRolloutChildren(rolloutStart);
+}
+
+void AI::removeRolloutChildren(AIState* rolloutStart)
+{
     //Reset the children as these are not 'real' children but just ones for the roll out.
     for(int i = 0; i < rolloutStart->children.size(); i++)
     {
-    	delete rolloutStart->children[i]; 
+        delete rolloutStart->children[i]; 
     }
     rolloutStart->children.clear();
 }

@@ -54,7 +54,7 @@ void makeAIHand()
     for(int i = 0; i < 4; i++)
     {            
         Tile* tile = new Tile();
-        tile->setTileType(getNextTileValue());
+        tile->setType(getNextTileValue());
         tile->setDraggable(true);
         aiHand.push_back(tile);
     }
@@ -62,7 +62,7 @@ void makeAIHand()
     for(int i = 0; i < 3; i++)
     {            
         Tile* tile = new Tile();
-        tile->setTileType(AIWIZ);
+        tile->setType(AIWIZ);
         tile->setDraggable(true);
         aiHand.push_back(tile);
     }
@@ -74,7 +74,7 @@ void makePlayerHand()
     for(int i = 0; i < 4; i++)
     {            
         Tile* tile = new Tile(i*81+10, 500, 80, 80);
-        tile->setTileType(getNextTileValue());
+        tile->setType(getNextTileValue());
         tile->setDraggable(true);
         hand.push_back(tile);
     }
@@ -82,7 +82,7 @@ void makePlayerHand()
     for(int i = 0; i < 3; i++)
     {            
         Tile* tile = new Tile(i*81+10, 400, 80, 80);
-        tile->setTileType(YOURWIZ);
+        tile->setType(YOURWIZ);
         tile->setDraggable(true);
         hand.push_back(tile);
     }
@@ -97,12 +97,12 @@ void makeBoard()
         for(int j = 0; j < 5; j ++)
         {
             Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
-            tile->setTileType(0);
+            tile->setType(0);
             tile->setDraggable(false);
             board.push_back(tile);
         }
     }
-    board[12]->setTileType(getNextTileValue());
+    board[12]->setType(getNextTileValue());
 }
 
 void update(){
@@ -202,7 +202,7 @@ void handleDroppedTile()
     {
         if(board[i]->containsPoint(mX,mY) && board[i]->getType() == EMPTY)
         {
-            board[i]->setTileType(selectedTile->getType());
+            board[i]->setType(selectedTile->getType());
             hand.erase(
                 remove_if( hand.begin(), hand.end(),
                     [](const Tile* tile){ return tile == selectedTile;}
@@ -211,7 +211,7 @@ void handleDroppedTile()
             if(selectedTile->getType() < YOURWIZ)
             {
                 Tile* tile = new Tile(selectedTileSX, selectedTileSY, 80, 80);
-                tile->setTileType(getNextTileValue());
+                tile->setType(getNextTileValue());
                 tile->setDraggable(true);
                 hand.push_back(tile);
             }
@@ -303,7 +303,7 @@ void unpackState(AIState& newState)
     for(int i = 0; i < newState.aihand.size(); i++) 
     {
         Tile* tile = new Tile();
-        tile->setTileType(newState.aihand[i]);
+        tile->setType(newState.aihand[i]);
         tile->setDraggable(false);
         aiHand.push_back(tile);
     }
@@ -314,7 +314,7 @@ void unpackState(AIState& newState)
     for(int i = 0; i < newState.phand.size(); i++) 
     {
         Tile* tile = new Tile();
-        tile->setTileType(newState.phand[i]);
+        tile->setType(newState.phand[i]);
         tile->setDraggable(true);
 
         if(newState.phand[i] == YOURWIZ)
@@ -337,7 +337,7 @@ void unpackState(AIState& newState)
         for(int j = 0; j < 5; j ++)
         {
             Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
-            tile->setTileType(newState.board[i*5+j]);
+            tile->setType(newState.board[i*5+j]);
             tile->setDraggable(false);
             board.push_back(tile);
         }

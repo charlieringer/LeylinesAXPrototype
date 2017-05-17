@@ -11,6 +11,7 @@ enum{
 	FOUR = 4,
 	EMPTY = 0,
 
+	UNKNOWN = 100,
 	YOURWIZ = 200,
 	AIWIZ = 300,
 };
@@ -21,7 +22,7 @@ class Tile
 		Tile();
 		Tile(int x, int y, int w, int h);
 		void display();
-		void setTileType(int type);
+		void setType(int type);
 		void setDraggable(bool draggable);
 		void setX(int _x){ x = _x;};
 		void setY(int _y){ y = _y;};

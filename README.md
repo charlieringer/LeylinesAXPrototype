@@ -3,6 +3,7 @@ Prototype of Leylines in Axilya
 
 Build & Run
 -----------
+- First install Axilya (see it's Github page)
 - To build (via command line) naviagate to dir and then enter "make".
 - To run (via command line) naviagate to dir and then enter "run".
 - To build then run (via command line) naviagate to dir and then enter "make run".
@@ -22,3 +23,8 @@ Axilya
 ------
 - This game is made using Axylia
 - Check it out here: https://github.com/vexparadox/Axilya
+
+Todo
+----
+- Pruning of moves for the AI
+- Spells

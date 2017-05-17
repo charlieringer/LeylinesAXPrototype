@@ -8,12 +8,15 @@ using namespace std;
 class AI
 {
 	private:
-	    int numbSimulations = 1000;
+		float eps = 0.25;
+	    int numbSimulations = 500;
         double exploreWeight = 1.45;
-        int maxRollout = 5;
+        int maxRollout = 8;
+        AIState*  selectBestMove(AIState* initialState);
+        void rollout(AIState* rolloutStart);
+        void removeRolloutChildren(AIState* rolloutStart);	
 
 	public:
 		AIState* run(AIState* initialState);
-		void rollout(AIState* rolloutStart);	
 };
 
