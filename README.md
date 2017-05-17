@@ -32,5 +32,4 @@ Axilya
 
 Todo
 ----
-- Pruning of moves for the AI
 - Spells
