@@ -6,12 +6,14 @@ TextObject::~TextObject(){
 
 void TextObject::display(int x, int y)
 {
-	drawTexture(text, x, y);
+	if(text) drawTexture(text, x, y);
+	else AXLog::error("Invalid text texture being drawn.");
 }
 
 void TextObject::displayCentered(int x, int y)
 {
-	drawTexture(text, x-(text->getWidth()/2), y-(text->getHeight()/2));
+	if(text) drawTexture(text, x-(text->getWidth()/2), y-(text->getHeight()/2));
+	else AXLog::error("Invalid text texture being drawn.");
 }
 
 void TextObject::setText(string _text, AXFont* font)
