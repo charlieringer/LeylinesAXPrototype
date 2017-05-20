@@ -39,16 +39,6 @@ int main(int argc, char *argv[])
     return AXWindow::run();
 }
 
-int getNextTileValue()
-{
-    float value = (float)rand() / RAND_MAX;
-    if(value < 0.15) return -2;
-    if(value < 0.3) return 4;
-    if(value < 0.5) return 3;
-    if(value < 0.75) return 2;
-    return 1;
-};
-
 int getTileHScore()
 {
     return 1;

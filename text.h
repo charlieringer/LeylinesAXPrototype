@@ -7,7 +7,11 @@ class TextObject
 {
 	private:
 		string rawString;
+<<<<<<< HEAD
 		AXTexture* text = nullptr;
+=======
+		AXTexture* text;
+>>>>>>> 8ff21d5e2200320ea6c19150f957edbd4a1d921a
 	public:
 		~TextObject();
 		void display(int x, int y);

@@ -44,12 +44,16 @@ class Level
 		TextObject gameOver;
 		AXFont* smallFont;
 		AXFont* bigFont;
-		
-		void makeAIHand();
+
+		//Makes the decks for each player
 		void makeAIDeck();
-		void makePlayerHand();
 		void makePlayerDeck();
+		//Makes the starting hands
+		void makeAIHand();
+		void makePlayerHand();
+		//Makes the board
 		void makeBoard();
+		
 		void checkUserInput();
 		void handleDroppedTile();
 		void calculateGameScore();

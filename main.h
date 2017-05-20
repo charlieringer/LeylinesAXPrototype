@@ -1,3 +1,1 @@
-int getNextTileValue();
-
 int getTileHScore();
