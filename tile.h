@@ -4,15 +4,19 @@
 using namespace AXGraphics;
 
 enum{
+	//These are the actual tile values
 	MINUSTWO = -2,
 	ONE = 1,
 	TWO = 2,
 	THREE = 3,
 	FOUR = 4,
 	EMPTY = 0,
-
+	//Anything 100-199 is unknown data
 	UNKNOWN = 100,
+	RANDOM = 150,
+	//200 is your wizard
 	YOURWIZ = 200,
+	//300 is ai wizard
 	AIWIZ = 300,
 };
 
@@ -43,7 +47,7 @@ class Tile
 		bool beingDragged = false;
 		bool dragable;
 		int tileType;
-		AXTexture* tex;
+		AXTexture* tex = nullptr;
 
 		static AXTexture* emptyTex;
 		static AXTexture* minustwoTex;

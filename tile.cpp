@@ -5,7 +5,7 @@ Tile::Tile(int _x, int _y, int _w, int _h) : x (_x), y(_y), w(_w), h (_h){}
 
 void Tile::display()
 {
-	drawTexture(tex, x, y, w, h);
+	if(tex) drawTexture(tex, x, y, w, h);
 }
 
 void Tile::setType(int _tileType)

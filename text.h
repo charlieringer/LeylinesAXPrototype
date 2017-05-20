@@ -7,9 +7,9 @@ class TextObject
 {
 	private:
 		string rawString;
-		SDL_Texture* text;
-		AXVector2D size;
+		AXTexture* text = nullptr;
 	public:
+		~TextObject();
 		void display(int x, int y);
 		void displayCentered(int x, int y);
 		void setText(string _text, AXFont* font);

@@ -33,7 +33,7 @@ vector<AIState*> AIState::generateChildren ()
 				vector<int> newboard = board;
 				newboard[j] = currenthandcpy[i];
 				if(currenthandcpy[i] < YOURWIZ) currenthandcpy[i] = UNKNOWN;
-				else currenthandcpy.erase(currenthandcpy.begin() +i);
+				else currenthandcpy.erase(currenthandcpy.begin() + i);
 				AIState* newChild;
 				if(playerIndex == 0) newChild = new AIState(newPIndx, this, newboard, currenthandcpy, aihand, numbPiecesPlayed+1);
 				else newChild = new AIState(newPIndx, this, newboard, phand, currenthandcpy, numbPiecesPlayed+1);
@@ -46,12 +46,12 @@ vector<AIState*> AIState::generateChildren ()
 
 int AIState::getWinner ()
 {
-	calculateGameScore();
+
 	if(numbPiecesPlayed < 25) return -1;
+    calculateGameScore();
 	if(playerScore > aiScore) return 0;
 	else if (aiScore > playerScore) return 1;
 	return 2;
-
 }
 
 float AIState::getScore()
@@ -92,7 +92,7 @@ void AIState::calculateGameScore()
     //First replace all unknowns with random values
     for(int i = 0; i < scoreBoard.size(); i++)
     {
-    	if(scoreBoard[i] == UNKNOWN) scoreBoard[i] = getNextTileValue();
+    	if(scoreBoard[i] == UNKNOWN) scoreBoard[i] = getTileHScore();
     }
 
     for(int i = 0; i < scoreBoard.size(); i++)
@@ -138,7 +138,7 @@ vector<int> AIState::calculateHueristicScores()
     //First replace all unknowns with random values
     for(int i = 0; i < scoreBoard.size(); i++)
     {
-    	if(scoreBoard[i] == UNKNOWN || scoreBoard[i] == EMPTY) scoreBoard[i] = getNextTileValue();
+    	if(scoreBoard[i] == UNKNOWN || scoreBoard[i] == EMPTY) scoreBoard[i] = getTileHScore();
     }
 
     for(int i = 0; i < scoreBoard.size(); i++)

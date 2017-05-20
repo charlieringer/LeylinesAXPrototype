@@ -6,48 +6,63 @@ using namespace std;
 
 class AIState
 {
-	public:
-		//Tracks Wins
+	private:
 		double wins;
-		//Tracks total games played
 		int totGames;
-		//Which player caused that state
 		int playerIndex;
-		//It's parent
 		AIState* parent;
-		//List of child nodes
 		vector<AIState*> children;
-
 		int aiScore = 0;
 		int playerScore = 0;
 		int numbPiecesPlayed = 0;
-
 		float hscore;
-
 		bool pruned = false;
-
 		vector<int> board; 
 		vector<int> phand;
 		vector<int> aihand;
 
-	
-	    //All of the constructors
-	    AIState();
+		void calculateGameScore();
+		float getScore();
+		vector<int> calculateHueristicScores();
+
+	public:
 	    ~AIState();
 	    AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _phand, vector<int> _aihand, int _numbPiecesPlayed);
 
-		//For adding score
+	    float getHueristicScore();
+	    vector<AIState*> generateChildren ();
+		int getWinner ();
+
+
+		double getWins(){ return wins; };
+		double getTotalGames(){ return totGames; };
+		bool isPruned(){ return pruned; };
+		vector<int> getAIHand(){ return aihand; };
+		vector<int> getPlayerHand(){ return phand; };
+		vector<int> getBoard(){ return board; };
+		int getNumbChildren(){ return children.size(); };
+		AIState* getNthChild(int n){ return children[n]; };
+		void setPruned(bool _pruned){ pruned = _pruned; };
+		void removeWorstNChildren(int numbToRemove){ 
+			sort(children.begin(), children.end(), [](AIState* a, AIState* b){return a->hscore < b->hscore;});
+			children.erase(children.begin()+numbToRemove, children.end()); 
+		};
+		vector<AIState*>& getChildren(){ return children; };
+	    //For adding score
 		void addScore(double value)
 		{
 		    wins += value;
 			totGames++;
 			if(parent) parent->addScore(1-value);
 		}
+		void removeChildren()
+		{
+		    //Reset the children as these are not 'real' children but just ones for the roll out.
+		    for(int i = 0; i < children.size(); i++)
+		    {
+		        delete children[i]; 
+		    }
+		    children.clear();
+		}
 
-		vector<AIState*> generateChildren ();
-		int getWinner ();
-		void calculateGameScore();
-		float getScore();
-		float getHueristicScore();
-		vector<int> calculateHueristicScores();
 };
