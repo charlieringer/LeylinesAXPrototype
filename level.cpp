@@ -16,6 +16,8 @@ Level::Level()
     deckDistribution.push_back(4);
     deckDistribution.push_back(-2);
     deckDistribution.push_back(-2);
+
+    width = 5;
 }
 
 void Level::setup()
@@ -115,7 +117,16 @@ void Level::makeBoard()
             board.push_back(tile);
         }
     }
-    board[(width*width)/2]->setType(getNextTileValue());
+    board[(width*width)/2]->setType(getTileFromDistribution());
+
+    maxNumberOfPieces = width*width;
+    numbPiecesPlayed = 1;
+}
+
+int Level::getTileFromDistribution()
+{
+    int randIndex = rand()%deckDistribution.size();
+    return deckDistribution[randIndex];
 }
 
 void Level::update()

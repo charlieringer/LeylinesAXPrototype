@@ -9,7 +9,7 @@
 class Level
 {
 	private:
-		int width = 5;
+		int width;
 		vector<int> deckDistribution;
 
 		//Data about the playing pieces
@@ -33,9 +33,13 @@ class Level
 		int playerScore = 0;
 		int aiScore = 0;
 
+		//Game tracking
 		bool playersTurn = true;
+		int numbPiecesPlayed = 0;
+		int maxNumberOfPieces = 0;
+
+		//The AI
 		AI ai;
-		int numbPiecesPlayed = 1;
 
 		//Text stuff
 		TextObject playerScoreText;
@@ -53,7 +57,7 @@ class Level
 		void makePlayerHand();
 		//Makes the board
 		void makeBoard();
-		
+
 		void checkUserInput();
 		void handleDroppedTile();
 		void calculateGameScore();
@@ -62,6 +66,7 @@ class Level
 		void waitForReset();
 		int getNextPlayerTile();
 		int getNextAITile();
+		int getTileFromDistribution();
 
 	public:	
 		Level();
