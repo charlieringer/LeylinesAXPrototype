@@ -1,5 +1,16 @@
 #include "ai.h"
 
+AI::AI()
+{
+    //TODO: Parse from file
+    eps = 0.25;
+    numbSimulations = 600;
+    exploreWeight = 1.45;
+    maxRollout = 8;
+    minpruneamount = 10;
+    pruneworst = 0.25;
+}
+
 AIState*  AI::run(AIState* initialState)
 {
     //Make the intial children
@@ -10,7 +21,6 @@ AIState*  AI::run(AIState* initialState)
     while(count < numbSimulations)
     { 
         count++; //Increment the count
-        //AXLog::debug("Current AI Loop: " + to_string(count));
         //Start at the inital state
         AIState* bestNode = initialState;
         //And loop through it's child

@@ -1,26 +1,31 @@
 #pragma once
 #include <Axilya/AXMain.h>
-#include "main.h"
 #include "aistate.h"
 using namespace AXGraphics;
 using namespace std;
 
+#ifndef AI_H
+#define AI_H
+
 class AI
 {
     private:
-       float eps = 0.25;
-       int numbSimulations = 400;
-       double exploreWeight = 1.45;
-       int maxRollout = 8;
-       int minpruneamount = 10;
-       float pruneworst = 0.25;
-       
+       float eps;
+       int numbSimulations;
+       double exploreWeight;
+       int maxRollout;
+       int minpruneamount;
+       float pruneworst;
+
        AIState*  selectBestMove(AIState* initialState);
        void rollout(AIState* rolloutStart);
        void removeRolloutChildren(AIState* rolloutStart);	
        void prune(AIState* state);
 
     public:
-       AIState* run(AIState* initialState);
+      AI();
+      AIState* run(AIState* initialState);
 };
+
+#endif
 

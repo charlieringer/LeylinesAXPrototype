@@ -3,8 +3,10 @@
 #include "tile.h"
 #include "aistate.h"
 #include "ai.h"
-#include "main.h"
 #include "text.h"
+
+#ifndef LEVEL_H
+#define LEVEL_H
 
 class Level
 {
@@ -37,6 +39,7 @@ class Level
 		bool playersTurn = true;
 		int numbPiecesPlayed = 0;
 		int maxNumberOfPieces = 0;
+		int tileHScore;
 
 		//The AI
 		AI ai;
@@ -67,6 +70,7 @@ class Level
 		int getNextPlayerTile();
 		int getNextAITile();
 		int getTileFromDistribution();
+		int getTileHScore();
 
 	public:	
 		Level();
@@ -74,3 +78,5 @@ class Level
 		void update();
 		void draw();
 };
+
+#endif

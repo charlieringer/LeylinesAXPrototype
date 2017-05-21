@@ -24,3 +24,12 @@ void TextObject::setText(string _text, AXFont* font)
 	text = font->bakeTexture(_text, fill);
 	rawString = _text;
 }
+
+void TextObject::setText(string _text, AXFont* font, AXColour colour)
+{
+	if(text) delete text;
+	AXColour fill = colour;
+
+	text = font->bakeTexture(_text, fill);
+	rawString = _text;
+}

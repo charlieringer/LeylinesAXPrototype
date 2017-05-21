@@ -1,6 +1,6 @@
 #include "aistate.h"
 
-AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _phand, vector<int> _aihand, int _numbPiecesPlayed)
+AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _phand, vector<int> _aihand, int _numbPiecesPlayed, int _tileHScore)
 {
 	playerIndex = pIndex;
 	parent = _parent;
@@ -9,6 +9,7 @@ AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _
     phand = _phand;
 	aihand = _aihand;
 	numbPiecesPlayed = _numbPiecesPlayed;
+    tileHScore = _tileHScore;
 }
 
 AIState::~AIState()
@@ -35,8 +36,8 @@ vector<AIState*> AIState::generateChildren ()
 				if(currenthandcpy[i] < YOURWIZ) currenthandcpy[i] = UNKNOWN;
 				else currenthandcpy.erase(currenthandcpy.begin() + i);
 				AIState* newChild;
-				if(playerIndex == 0) newChild = new AIState(newPIndx, this, newboard, currenthandcpy, aihand, numbPiecesPlayed+1);
-				else newChild = new AIState(newPIndx, this, newboard, phand, currenthandcpy, numbPiecesPlayed+1);
+				if(playerIndex == 0) newChild = new AIState(newPIndx, this, newboard, currenthandcpy, aihand, numbPiecesPlayed+1, tileHScore);
+				else newChild = new AIState(newPIndx, this, newboard, phand, currenthandcpy, numbPiecesPlayed+1, tileHScore);
 				children.push_back(newChild);
 			}
 		}
@@ -79,7 +80,7 @@ float AIState::getHueristicScore()
 	if(playerIndex == 0) scoreDiff = hscores[0]-hscores[1];
 	else scoreDiff = hscores[1] - hscores[0];
 	float sigscore = 1.0/(1.0+exp(-scoreDiff));
-	hscore = sigscore;
+	stateHScore = sigscore;
 	return sigscore;
 }
 
@@ -92,7 +93,7 @@ void AIState::calculateGameScore()
     //First replace all unknowns with random values
     for(int i = 0; i < scoreBoard.size(); i++)
     {
-    	if(scoreBoard[i] == UNKNOWN) scoreBoard[i] = getTileHScore();
+    	if(scoreBoard[i] == UNKNOWN) scoreBoard[i] = tileHScore;
     }
 
     for(int i = 0; i < scoreBoard.size(); i++)
@@ -138,7 +139,7 @@ vector<int> AIState::calculateHueristicScores()
     //First replace all unknowns with random values
     for(int i = 0; i < scoreBoard.size(); i++)
     {
-    	if(scoreBoard[i] == UNKNOWN || scoreBoard[i] == EMPTY) scoreBoard[i] = getTileHScore();
+    	if(scoreBoard[i] == UNKNOWN || scoreBoard[i] == EMPTY) scoreBoard[i] = tileHScore;
     }
 
     for(int i = 0; i < scoreBoard.size(); i++)
@@ -175,4 +176,25 @@ vector<int> AIState::calculateHueristicScores()
     scores.push_back(latestPlayerScore);
     scores.push_back(latestAIScore);
     return scores;
+}
+
+void AIState::removeWorstNChildren(int numbToRemove){ 
+    sort(children.begin(), children.end(), [](AIState* a, AIState* b){return a->stateHScore < b->stateHScore;});
+    children.erase(children.begin()+numbToRemove, children.end()); 
+};
+
+void AIState::addScore(double value)
+{
+    wins += value;
+    totGames++;
+    if(parent) parent->addScore(1-value);
+}
+void AIState::removeChildren()
+{
+    //Reset the children as these are not 'real' children but just ones for the roll out.
+    for(int i = 0; i < children.size(); i++)
+    {
+        delete children[i]; 
+    }
+    children.clear();
 }

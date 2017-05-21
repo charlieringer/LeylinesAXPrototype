@@ -1,8 +1,9 @@
 #pragma once
 #include <Axilya/AXMain.h>
-#include "main.h"
 using namespace AXGraphics;
 
+#ifndef TILE_H
+#define TILE_H
 enum{
 	//These are the actual tile values
 	MINUSTWO = -2,
@@ -22,23 +23,6 @@ enum{
 
 class Tile
 {
-	public:
-		Tile();
-		Tile(int x, int y, int w, int h);
-		void display();
-		void setType(int type);
-		void setDraggable(bool draggable);
-		void setX(int _x){ x = _x;};
-		void setY(int _y){ y = _y;};
-		void setXCenteredOn(int _x){ x = _x-w/2;};
-		void setYCenteredOn(int _y){ y = _y-h/2;};
-		void setWH(int _wh){w = h = _wh;};
-		int getX(){return x;};
-		int getY(){return y;};
-		int getType(){return tileType;};
-		bool containsPoint(int oX, int oY){return(oX > x && oX < x+w && oY > y && oY < y+h);};
-		static void loadTextures();
-
 	private:
 		int x = 0;
 		int y = 0;
@@ -57,4 +41,23 @@ class Tile
 		static AXTexture* fourTex;
 		static AXTexture* yourWhizTex;
 		static AXTexture* aiWhizTex;
+
+	public:
+		Tile();
+		Tile(int x, int y, int w, int h);
+		void display();
+		void setType(int type);
+		void setDraggable(bool draggable);
+		void setX(int _x){ x = _x;};
+		void setY(int _y){ y = _y;};
+		void setXCenteredOn(int _x){ x = _x-w/2;};
+		void setYCenteredOn(int _y){ y = _y-h/2;};
+		void setWH(int _wh){w = h = _wh;};
+		int getX(){return x;};
+		int getY(){return y;};
+		int getType(){return tileType;};
+		bool containsPoint(int oX, int oY){return(oX > x && oX < x+w && oY > y && oY < y+h);};
+		static void loadTextures();
 };
+
+#endif

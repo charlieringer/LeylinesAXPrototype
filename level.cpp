@@ -31,11 +31,15 @@ void Level::setup()
 
     xOffset = 520-(81*(width/2));
     yOffset = 280-(81*(width/2));
+
+   // ai.setLevel(this);
     makeBoard();
     makeAIDeck();
     makePlayerDeck();
     makeAIHand();
     makePlayerHand();
+
+    tileHScore = getTileHScore();
 }
 
 void Level::makeAIHand()
@@ -129,6 +133,16 @@ int Level::getTileFromDistribution()
     return deckDistribution[randIndex];
 }
 
+int Level::getTileHScore()
+{
+    int total = 0;
+    for(int i = 0; i < deckDistribution.size(); i++)
+    {
+        total += deckDistribution[i];
+    }
+    return (int)total/deckDistribution.size();
+}
+
 void Level::update()
 {
     if(numbPiecesPlayed < 25)
@@ -144,6 +158,8 @@ void Level::update()
 }
 
 void Level::draw(){
+    //Set the background colour
+    setBackground(100,150,75,0);
     playerScoreText.display(10,10);
     aiScoreText.display(10,50);
 
@@ -283,7 +299,7 @@ void Level::runAI()
     for(int i = 0; i < hand.size();   i++) playerHandForState.push_back(UNKNOWN);
     for(int i = 0; i < board.size();  i++) boardForState.push_back(board[i]->getType());
 
-    AIState* currentState = new AIState(1, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed);
+    AIState* currentState = new AIState(1, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed, tileHScore);
     AIState* newState = ai.run(currentState);
 
     for(int i = 0; i < aiHand.size(); i++) delete aiHand[i];
@@ -307,28 +323,6 @@ void Level::unpackState(AIState& newState)
 
     int latestWizX = 10;
     int latestTileX = 10;
-
-    // for(int i = 0; i < newState.getPlayerHand().size(); i++) 
-    // {
-    //     Tile* tile = new Tile();
-    //     if(newState.getPlayerHand()[i] != UNKNOWN) tile->setType(newState.getPlayerHand()[i]);
-    //     else tile->setType(ge());
-
-    //     tile->setDraggable(true);
-
-    //     if(newState.getPlayerHand()[i] == YOURWIZ)
-    //     {
-    //         tile->setX(latestWizX);
-    //         tile->setY(400);
-    //         latestWizX+=81;
-    //     } else {
-    //         tile->setX(latestTileX);
-    //         tile->setY(500);
-    //         latestTileX+=81;
-    //     }
-    //     tile->setWH(80);
-    //     hand.push_back(tile);
-    // }
 
     for(int i = 0; i < width; i ++)
         for(int j = 0; j < width; j ++)
@@ -370,3 +364,10 @@ void Level::waitForReset()
         makePlayerHand();
     }
 }
+
+
+int getTileHScore()
+{
+    //Yeah.... This need refactoring and badly...
+    return 1;
+};
