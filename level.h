@@ -1,5 +1,6 @@
 #include <Axilya/AXMain.h>
 #include <algorithm>
+#include <map>
 #include "tile.h"
 #include "aistate.h"
 #include "ai.h"
@@ -8,11 +9,18 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
+using namespace std;
+
 class Level
 {
 	private:
+		//Data about the level itself
 		int width;
-		vector<int> deckDistribution;
+		vector<int> playerDeckDistribution;
+		vector<int> aiDeckDistribution;
+		map<int, int> specialBoardPositions;
+		int numbPlayerWiz;
+		int numbAIWiz;
 
 		//Data about the playing pieces
 		vector<Tile*> board;
@@ -73,8 +81,7 @@ class Level
 		int getTileHScore();
 
 	public:	
-		Level();
-		void setup();
+		Level(string levelfile);
 		void update();
 		void draw();
 };

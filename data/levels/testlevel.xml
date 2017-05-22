@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Level XML 
+ Each level should contain:
+ Width: How wide the board is, either 5,6, or 7
+ SpecialBoardPostions: A lists of board positions (id= index ) and what tile they should start with
+ Note: Special tile values:
+	Random = 150
+	Your Wizard = 200
+	AI Wizard = 300
+ PlayerNumbWiz & AINumbWiz: The number of Wizards each player has
+ PlayerDeckDist & AIDeckDist: What the player's deck looks like
+-->
+
+<Level ID = "test" Width= "6" PlayerNumbWiz = "4" AINumbWiz = "4">
+
+	<SpecialBoardPositions>
+		<location id="7" value="-2"></location>
+		<location id="10" value="-2"></location>
+		<location id="25" value="-2"></location>
+		<location id="28" value="-2"></location>
+	</SpecialBoardPositions>
+	
+	<PlayerDeckDist>
+		<item Type = "-2"/>
+		<item Type = "-2"/>
+		<item Type = "-2"/>
+		<item Type = "-2"/>
+		<item Type = "2"/>
+		<item Type = "2"/>
+		<item Type = "3"/>
+		<item Type = "3"/>
+		<item Type = "4"/>
+		<item Type = "4"/>
+		<item Type = "4"/>
+		<item Type = "-2"/>
+		<item Type = "-2"/>
+	</PlayerDeckDist>
+
+	<AIDeckDist>
+		<item Type = "-2"/>
+		<item Type = "-2"/>
+		<item Type = "-2"/>
+		<item Type = "-2"/>
+		<item Type = "2"/>
+		<item Type = "2"/>
+		<item Type = "3"/>
+		<item Type = "3"/>
+		<item Type = "4"/>
+		<item Type = "4"/>
+		<item Type = "4"/>
+		<item Type = "-2"/>
+		<item Type = "-2"/>
+	</AIDeckDist>
+</Level>

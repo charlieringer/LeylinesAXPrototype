@@ -15,6 +15,7 @@ class AIState
 		AIState* parent = nullptr;
 		vector<AIState*> children;
 		int aiScore = 0;
+		int width = 0;
 		int playerScore = 0;
 		int numbPiecesPlayed = 0;
 		int tileHScore = 0;
@@ -24,13 +25,11 @@ class AIState
 		vector<int> phand;
 		vector<int> aihand;
 
-		void calculateGameScore();
-		float getScore();
-		vector<int> calculateHueristicScores();
+		void calculateHueristicScore();
 
 	public:
 	    ~AIState();
-	    AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _phand, vector<int> _aihand, int _numbPiecesPlayed, int _tileHScore);
+	    AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _phand, vector<int> _aihand, int _numbPiecesPlayed, int _tileHScore, int _width);
 
 	    float getHueristicScore();
 	    vector<AIState*> generateChildren ();
@@ -39,9 +38,11 @@ class AIState
 		double getWins(){ return wins; };
 		double getTotalGames(){ return totGames; };
 		bool isPruned(){ return pruned; };
+		//Gets the various components of the game
 		vector<int> getAIHand(){ return aihand; };
 		vector<int> getPlayerHand(){ return phand; };
 		vector<int> getBoard(){ return board; };
+		
 		int getNumbChildren(){ return children.size(); };
 		AIState* getNthChild(int n){ return children[n]; };
 		void setPruned(bool _pruned){ pruned = _pruned; };

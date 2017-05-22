@@ -1,16 +1,10 @@
 #include "aistate.h"
 
-AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _phand, vector<int> _aihand, int _numbPiecesPlayed, int _tileHScore)
-{
-	playerIndex = pIndex;
-	parent = _parent;
-	wins = totGames = 0;
-	board = _board; 
-    phand = _phand;
-	aihand = _aihand;
-	numbPiecesPlayed = _numbPiecesPlayed;
-    tileHScore = _tileHScore;
-}
+//Stupidly massive constructor alert
+AIState::AIState(int pIndex, AIState* _parent, vector<int> _board, vector<int> _phand, vector<int> _aihand, int _numbPiecesPlayed, int _tileHScore, int _width) :
+playerIndex(pIndex), parent(_parent), board(_board), phand(_phand), 
+aihand(_aihand), numbPiecesPlayed(_numbPiecesPlayed), tileHScore(_tileHScore), 
+width(_width), wins(0), totGames(0){}
 
 AIState::~AIState()
 {
@@ -36,55 +30,46 @@ vector<AIState*> AIState::generateChildren ()
 				if(currenthandcpy[i] < YOURWIZ) currenthandcpy[i] = UNKNOWN;
 				else currenthandcpy.erase(currenthandcpy.begin() + i);
 				AIState* newChild;
-				if(playerIndex == 0) newChild = new AIState(newPIndx, this, newboard, currenthandcpy, aihand, numbPiecesPlayed+1, tileHScore);
-				else newChild = new AIState(newPIndx, this, newboard, phand, currenthandcpy, numbPiecesPlayed+1, tileHScore);
+				if(playerIndex == 0) newChild = new AIState(newPIndx, this, newboard, currenthandcpy, aihand, numbPiecesPlayed+1, tileHScore, width);
+				else newChild = new AIState(newPIndx, this, newboard, phand, currenthandcpy, numbPiecesPlayed+1, tileHScore, width);
 				children.push_back(newChild);
 			}
 		}
 	}
+    //Shuffled to make AI turns where not a lot of experimentation happens (likely at the start of the game) appear more random
+    //The alternative is to have the AI play moves close together, not as satifiying. 
+    random_shuffle(children.begin(), children.end());
 	return children;
 }
 
 int AIState::getWinner ()
 {
+	if(numbPiecesPlayed < board.size()) return -1;
 
-	if(numbPiecesPlayed < 25) return -1;
-    calculateGameScore();
+    calculateHueristicScore();
 	if(playerScore > aiScore) return 0;
 	else if (aiScore > playerScore) return 1;
 	return 2;
 }
 
-float AIState::getScore()
-{
-	int result = getWinner();
-	if(result >= 0 && result < 2) return (result+1)%2;
-
-	float scoreDiff;
-
-	if(playerIndex == 0) scoreDiff = playerScore-aiScore;
-	else scoreDiff = aiScore-playerScore;
-	float sigscore = 1.0/(1.0+exp(-scoreDiff));
-	return sigscore;
-}
-
 float AIState::getHueristicScore()
 {
 	int result = getWinner();
-	if(result >= 0 && result < 2) return (result+1)%2;
+	if(result >= 0 && result < 2) return result;
+    if(result == 2) return 0.5;
 
 	float scoreDiff;
 
-	vector<int> hscores = calculateHueristicScores();
+	calculateHueristicScore();
 
-	if(playerIndex == 0) scoreDiff = hscores[0]-hscores[1];
-	else scoreDiff = hscores[1] - hscores[0];
+	if(playerIndex == 0) scoreDiff = playerScore-aiScore;
+	else scoreDiff = aiScore - playerScore;
 	float sigscore = 1.0/(1.0+exp(-scoreDiff));
 	stateHScore = sigscore;
 	return sigscore;
 }
 
-void AIState::calculateGameScore()
+void AIState::calculateHueristicScore()
 {
     int latestPlayerScore = 0;
     int latestAIScore = 0;
@@ -100,12 +85,12 @@ void AIState::calculateGameScore()
     {
         if(scoreBoard[i] == YOURWIZ)
         {
-            int rowStart = i-(i%5);
-            int colStart = i%5;
-            for(int i = 0; i < 5; i++)
+            int rowStart = i-(i%width);
+            int colStart = i%width;
+            for(int i = 0; i < width; i++)
             {
                 int currentHozIndx = rowStart+i;
-                int currentVertIndx = colStart+(i*5);
+                int currentVertIndx = colStart+(i*width);
 
                 if(scoreBoard[currentHozIndx]  < YOURWIZ) latestPlayerScore+=scoreBoard[currentHozIndx];
                 if(scoreBoard[currentVertIndx] < YOURWIZ) latestPlayerScore+=scoreBoard[currentVertIndx];
@@ -113,12 +98,12 @@ void AIState::calculateGameScore()
 
         } else if (scoreBoard[i] == AIWIZ)
         {
-            int rowStart = i-(i%5);
-            int colStart = i%5;
-            for(int i = 0; i < 5; i++)
+            int rowStart = i-(i%width);
+            int colStart = i%width;
+            for(int i = 0; i < width; i++)
             {
                 int currentHozIndx = rowStart+i;
-                int currentVertIndx = colStart+(i*5);
+                int currentVertIndx = colStart+(i*width);
 
                 if(scoreBoard[currentHozIndx] < YOURWIZ) latestAIScore+=scoreBoard[currentHozIndx];
                 if(scoreBoard[currentVertIndx] < YOURWIZ) latestAIScore+=scoreBoard[currentVertIndx];
@@ -128,54 +113,6 @@ void AIState::calculateGameScore()
     }
     playerScore = latestPlayerScore;
     aiScore = latestAIScore;
-}
-
-vector<int> AIState::calculateHueristicScores()
-{
-    int latestPlayerScore = 0;
-    int latestAIScore = 0;
-    vector<int> scoreBoard = board;
-
-    //First replace all unknowns with random values
-    for(int i = 0; i < scoreBoard.size(); i++)
-    {
-    	if(scoreBoard[i] == UNKNOWN || scoreBoard[i] == EMPTY) scoreBoard[i] = tileHScore;
-    }
-
-    for(int i = 0; i < scoreBoard.size(); i++)
-    {
-        if(scoreBoard[i] == YOURWIZ)
-        {
-            int rowStart = i-(i%5);
-            int colStart = i%5;
-            for(int i = 0; i < 5; i++)
-            {
-                int currentHozIndx = rowStart+i;
-                int currentVertIndx = colStart+(i*5);
-
-                if(scoreBoard[currentHozIndx]  < YOURWIZ) latestPlayerScore+=scoreBoard[currentHozIndx];
-                if(scoreBoard[currentVertIndx] < YOURWIZ) latestPlayerScore+=scoreBoard[currentVertIndx];
-            }
-
-        } else if (scoreBoard[i] == AIWIZ)
-        {
-            int rowStart = i-(i%5);
-            int colStart = i%5;
-            for(int i = 0; i < 5; i++)
-            {
-                int currentHozIndx = rowStart+i;
-                int currentVertIndx = colStart+(i*5);
-
-                if(scoreBoard[currentHozIndx] < YOURWIZ) latestAIScore+=scoreBoard[currentHozIndx];
-                if(scoreBoard[currentVertIndx] < YOURWIZ) latestAIScore+=scoreBoard[currentVertIndx];
-            }
-
-        }
-    }
-    vector<int> scores;
-    scores.push_back(latestPlayerScore);
-    scores.push_back(latestAIScore);
-    return scores;
 }
 
 void AIState::removeWorstNChildren(int numbToRemove){ 

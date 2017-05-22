@@ -1,58 +1,97 @@
 #include "level.h"
 
-Level::Level()
+Level::Level(string levelfile)
 {
-    //LEVEL PARSEING GOES HERE!!!!!
-    deckDistribution.push_back(1);
-    deckDistribution.push_back(1);
-    deckDistribution.push_back(1);
-    deckDistribution.push_back(2);
-    deckDistribution.push_back(2);
-    deckDistribution.push_back(2);
-    deckDistribution.push_back(3);
-    deckDistribution.push_back(3);
-    deckDistribution.push_back(3);
-    deckDistribution.push_back(4);
-    deckDistribution.push_back(4);
-    deckDistribution.push_back(-2);
-    deckDistribution.push_back(-2);
+    AXXML levelData(levelfile);
 
-    width = 5;
-}
+    width = levelData.child("Level").attribute("Width").as_int();
+    numbPlayerWiz = levelData.child("Level").attribute("PlayerNumbWiz").as_int();
+    numbAIWiz = levelData.child("Level").attribute("AINumbWiz").as_int();
 
-void Level::setup()
-{
+    //Parse the special board postions
+    AXXMLnode boardPositions = levelData.child("Level").child("SpecialBoardPositions");
+    for (AXXMLnode_iterator it = boardPositions.begin(); it != boardPositions.end(); ++it)
+    {
+        specialBoardPositions[it->attribute("id").as_int()] = it->attribute("value").as_int();
+    }   
+
+    //Parse the player deck
+    AXXMLnode playerDeck = levelData.child("Level").child("PlayerDeckDist");
+    for (AXXMLnode_iterator it = playerDeck.begin(); it != playerDeck.end(); ++it)
+    {
+        for (AXXMLattribute_iterator ait = it->attributes_begin(); ait != it->attributes_end(); ++ait)
+        {
+            playerDeckDistribution.push_back(ait->as_int());
+        }
+    }  
+
+    //Parse the ai deck
+    AXXMLnode aiDeck = levelData.child("Level").child("PlayerDeckDist");
+    for (AXXMLnode_iterator it = aiDeck.begin(); it != aiDeck.end(); ++it)
+    {
+        for (AXXMLattribute_iterator ait = it->attributes_begin(); ait != it->attributes_end(); ++ait)
+        {
+            aiDeckDistribution.push_back(ait->as_int());
+        }
+    }   
+
+    //Loads the fonts
     smallFont = new AXFont("data/Arial.ttf", 20);
     bigFont = new AXFont("data/Arial.ttf", 40);
     
+    //And sets the text
     playerScoreText.setText("Player Score: " + to_string(playerScore), smallFont);
     aiScoreText.setText("AI Score: " + to_string(aiScore), smallFont);
     aiThinking.setText("AI THINKING...", smallFont);
 
-    xOffset = 520-(81*(width/2));
-    yOffset = 280-(81*(width/2));
+    //Sets the X and Y offsets for the board.
+    if(width%2 == 0)
+    {
+        xOffset = 520-(81*(width/2))+40;
+        yOffset = 280-(81*(width/2))+40;
 
-   // ai.setLevel(this);
-    makeBoard();
+    } else {
+        xOffset = 520-(81*(width/2));
+        yOffset = 280-(81*(width/2));
+    }
+
+    makeBoard(); 
     makeAIDeck();
     makePlayerDeck();
     makeAIHand();
     makePlayerHand();
-
+    //TODO: Load and make spells
     tileHScore = getTileHScore();
+}
+
+void Level::makeAIDeck()
+{
+    //Get the deck distribution and set it as the deck
+    aiDeck = aiDeckDistribution;
+    //and then shuffle it
+    random_shuffle(aiDeck.begin(), aiDeck.end());
+}
+
+void Level::makePlayerDeck()
+{
+    //Get the deck distribution and set it as the deck
+    playerDeck = playerDeckDistribution;
+    //and then shuffle it
+    random_shuffle(playerDeck.begin(), playerDeck.end());
 }
 
 void Level::makeAIHand()
 {
+    //You get 4 number tiles
     for(int i = 0; i < 4; i++)
     {            
         Tile* tile = new Tile();
         tile->setType(getNextAITile());
-        tile->setDraggable(true);
         aiHand.push_back(tile);
     }
 
-    for(int i = 0; i < 3; i++)
+    //And 3 wizards
+    for(int i = 0; i < numbAIWiz; i++)
     {            
         Tile* tile = new Tile();
         tile->setType(AIWIZ);
@@ -64,48 +103,46 @@ void Level::makeAIHand()
 
 void Level::makePlayerHand()
 {
+    //You get 4 number tiles
     for(int i = 0; i < 4; i++)
-    {            
-        Tile* tile = new Tile(i*81+10, 500, 80, 80);
+    { 
+        Tile* tile = new Tile(10, 118+(i*81), 80, 80);
         tile->setType(getNextPlayerTile());
         tile->setDraggable(true);
         hand.push_back(tile);
     }
 
-    for(int i = 0; i < 3; i++)
+    //And 3 wizards
+    for(int i = 0; i < numbPlayerWiz; i++)
     {            
-        Tile* tile = new Tile(i*81+10, 400, 80, 80);
+        Tile* tile = new Tile(10+81, 118+(i*81), 80, 80);
         tile->setType(YOURWIZ);
         tile->setDraggable(true);
         hand.push_back(tile);
     }
 }
 
-void Level::makeAIDeck()
-{
-    aiDeck = deckDistribution;
-    random_shuffle(aiDeck.begin(), aiDeck.end());
-}
-
-void Level::makePlayerDeck()
-{
-    playerDeck = deckDistribution;
-    random_shuffle(playerDeck.begin(), playerDeck.end());
-}
-
 int Level::getNextPlayerTile()
 {
+    //If the deck is empty remake it
     if(playerDeck.size() == 0) makePlayerDeck();
+    //Get the last element
     int returnValue = playerDeck.back();
+    //Remove this tile
     playerDeck.pop_back();
+    //And return it
     return returnValue;
 }
 
 int Level::getNextAITile()
 {
+    //If the deck is empty remake it
     if(aiDeck.size() == 0) makeAIDeck();
+    //Get the last element
     int returnValue = aiDeck.back();
+    //Remove this tile
     aiDeck.pop_back();
+    //And return it
     return returnValue;
 }
 
@@ -121,31 +158,44 @@ void Level::makeBoard()
             board.push_back(tile);
         }
     }
-    board[(width*width)/2]->setType(getTileFromDistribution());
-
+    for(auto const &element : specialBoardPositions) {
+        if(element.second == RANDOM)
+        {
+            board[element.first]->setType(getTileFromDistribution());
+        } else {
+            board[element.first]->setType(element.second);
+        }
+        numbPiecesPlayed++;
+    }
     maxNumberOfPieces = width*width;
-    numbPiecesPlayed = 1;
 }
 
 int Level::getTileFromDistribution()
 {
-    int randIndex = rand()%deckDistribution.size();
-    return deckDistribution[randIndex];
+    //Gets a random tile value from the distribution
+    int randIndex = rand()%playerDeckDistribution.size();
+    return playerDeckDistribution[randIndex];
 }
 
 int Level::getTileHScore()
 {
     int total = 0;
-    for(int i = 0; i < deckDistribution.size(); i++)
+    for(int i = 0; i < playerDeckDistribution.size(); i++)
     {
-        total += deckDistribution[i];
+        total += playerDeckDistribution[i];
     }
-    return (int)total/deckDistribution.size();
+
+    for(int i = 0; i < aiDeckDistribution.size(); i++)
+    {
+        total += aiDeckDistribution[i];
+    }
+
+    return (int)total/(playerDeckDistribution.size()+aiDeckDistribution.size());
 }
 
 void Level::update()
 {
-    if(numbPiecesPlayed < 25)
+    if(numbPiecesPlayed < maxNumberOfPieces)
     {
         if(playersTurn) checkUserInput();
         else runAI();
@@ -172,7 +222,7 @@ void Level::draw(){
         drawRectCenter(400, 300, 300, 100);
         aiThinking.displayCentered(400, 300);
     }
-    if(numbPiecesPlayed == 25)
+    if(numbPiecesPlayed == maxNumberOfPieces)
     {
         fill(AXColour(255,255,255,128));
         drawRectCenter(400, 300, 500, 200);
@@ -290,7 +340,7 @@ void Level::calculateGameScore()
 
 void Level::runAI()
 {
-    if(numbPiecesPlayed == 25) return;
+    if(numbPiecesPlayed == maxNumberOfPieces) return;
     vector<int> aiHandForState;
     vector<int> playerHandForState;
     vector<int> boardForState;
@@ -299,7 +349,7 @@ void Level::runAI()
     for(int i = 0; i < hand.size();   i++) playerHandForState.push_back(UNKNOWN);
     for(int i = 0; i < board.size();  i++) boardForState.push_back(board[i]->getType());
 
-    AIState* currentState = new AIState(1, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed, tileHScore);
+    AIState* currentState = new AIState(1, NULL, boardForState, playerHandForState, aiHandForState, numbPiecesPlayed, tileHScore, width);
     AIState* newState = ai.run(currentState);
 
     for(int i = 0; i < aiHand.size(); i++) delete aiHand[i];
@@ -325,6 +375,7 @@ void Level::unpackState(AIState& newState)
     int latestTileX = 10;
 
     for(int i = 0; i < width; i ++)
+    {
         for(int j = 0; j < width; j ++)
         {
             Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
@@ -332,11 +383,12 @@ void Level::unpackState(AIState& newState)
             tile->setDraggable(false);
             board.push_back(tile);
         }
-
+    }
     numbPiecesPlayed++;
     calculateGameScore();
     playersTurn = true;
 }
+
 
 void Level::waitForReset()
 {
@@ -364,10 +416,3 @@ void Level::waitForReset()
         makePlayerHand();
     }
 }
-
-
-int getTileHScore()
-{
-    //Yeah.... This need refactoring and badly...
-    return 1;
-};

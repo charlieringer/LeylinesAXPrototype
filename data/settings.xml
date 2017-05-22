@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AI 
+	ThinkngTime = "3000"
+	Epsilon="0.25"
+	ExploreWeight="1.45"
+	MaxRollout="8"
+	MinPruneAmount="60"
+	PruneWorst="0.33"
+></AI>

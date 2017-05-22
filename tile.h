@@ -6,12 +6,20 @@ using namespace AXGraphics;
 #define TILE_H
 enum{
 	//These are the actual tile values
+	MINUSFOUR = -4,
+	MINUSTHREE = -3,
 	MINUSTWO = -2,
+	MINUSONE = -1,
+	EMPTY = 0,
 	ONE = 1,
 	TWO = 2,
 	THREE = 3,
 	FOUR = 4,
-	EMPTY = 0,
+	FIVE = 5,
+	
+	//Anything above 50 is a special tile
+	TREE = 50,
+	ROCK = 51,
 	//Anything 100-199 is unknown data
 	UNKNOWN = 100,
 	RANDOM = 150,
