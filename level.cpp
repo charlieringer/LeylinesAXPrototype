@@ -318,28 +318,76 @@ void Level::calculateGameScore()
         {
             int rowStart = i-(i%width);
             int colStart = i%width;
-            for(int i = 0; i < width; i++)
-            {
-                int currentHozIndx = rowStart+i;
-                int currentVertIndx = colStart+(i*width);
 
-                if(board[currentHozIndx]->getType() < YOURWIZ) latestPlayerScore+=board[currentHozIndx]->getType();
-                if(board[currentVertIndx]->getType() < YOURWIZ) latestPlayerScore+=board[currentVertIndx]->getType();
+            for(int j = 0; j < width; j++)
+            {
+                int current = i-j;
+                if(current < rowStart) break;
+                if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() < NONNUMERICTILES) latestPlayerScore+=board[current]->getType();
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i+j;
+                if(current >= rowStart+width) break;
+                if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() < NONNUMERICTILES) latestPlayerScore+=board[current]->getType();
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i-(j*width);
+                if(current < colStart) break;
+                if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() < NONNUMERICTILES) latestPlayerScore+=board[current]->getType();
+                
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i+(j*width);
+                if(current > colStart+(width*width)-width) break;
+                if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() < NONNUMERICTILES) latestPlayerScore+=board[current]->getType();  
             }
 
         } else if (board[i]->getType() == AIWIZ)
         {
             int rowStart = i-(i%width);
             int colStart = i%width;
-            for(int i = 0; i < width; i++)
-            {
-                int currentHozIndx = rowStart+i;
-                int currentVertIndx = colStart+(i*width);
 
-                if(board[currentHozIndx]->getType() < YOURWIZ) latestAIScore+=board[currentHozIndx]->getType();
-                if(board[currentVertIndx]->getType() < YOURWIZ) latestAIScore+=board[currentVertIndx]->getType();
+            for(int j = 0; j < width; j++)
+            {
+                int current = i-j;
+                if(current < rowStart) break;
+                if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() < NONNUMERICTILES) latestAIScore+=board[current]->getType();
             }
 
+            for(int j = 0; j < width; j++)
+            {
+                int current = i+j;
+                if(current >= rowStart+width) break;
+                if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() < NONNUMERICTILES) latestAIScore+=board[current]->getType();
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i-(j*width);
+                if(current < colStart) break;
+                if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() < NONNUMERICTILES) latestAIScore+=board[current]->getType();
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i+(j*width);
+                if(current > colStart+(width*width)-width) break;
+                if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() < NONNUMERICTILES) latestAIScore+=board[current]->getType();  
+            }
         }
     }
     playerScore = latestPlayerScore;

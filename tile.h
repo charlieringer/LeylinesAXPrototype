@@ -18,8 +18,9 @@ enum{
 	FIVE = 5,
 	
 	//Anything above 50 is a special tile
-	TREE = 50,
-	ROCK = 51,
+	NONNUMERICTILES = 50,
+	TREE = 51,
+	ROCK = 52,
 	//Anything 100-199 is unknown data
 	UNKNOWN = 100,
 	RANDOM = 150,
@@ -54,7 +55,7 @@ class Tile
 
 		static AXTexture* treeTex;
 		static AXTexture* rockTex;
-		
+
 		static AXTexture* yourWhizTex;
 		static AXTexture* aiWhizTex;
 

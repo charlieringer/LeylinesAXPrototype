@@ -87,28 +87,74 @@ void AIState::calculateHueristicScore()
         {
             int rowStart = i-(i%width);
             int colStart = i%width;
-            for(int i = 0; i < width; i++)
-            {
-                int currentHozIndx = rowStart+i;
-                int currentVertIndx = colStart+(i*width);
 
-                if(scoreBoard[currentHozIndx]  < YOURWIZ) latestPlayerScore+=scoreBoard[currentHozIndx];
-                if(scoreBoard[currentVertIndx] < YOURWIZ) latestPlayerScore+=scoreBoard[currentVertIndx];
+            for(int j = 0; j < width; j++)
+            {
+                int current = i-j;
+                if(current < rowStart) break;
+                if(board[current] == ROCK) break;
+                if(board[current] < NONNUMERICTILES) latestPlayerScore+=board[current];
             }
 
+            for(int j = 0; j < width; j++)
+            {
+                int current = i+j;
+                if(current >= rowStart+width) break;
+                if(board[current] == ROCK) break;
+                if(board[current] < NONNUMERICTILES) latestPlayerScore+=board[current];
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i-(j*width);
+                if(current < colStart) break;
+                if(board[current] == ROCK) break;
+                if(board[current] < NONNUMERICTILES) latestPlayerScore+=board[current];
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i+(j*width);
+                if(current > colStart+(width*width)-width) break;
+                if(board[current] == ROCK) break;
+                if(board[current] < NONNUMERICTILES) latestPlayerScore+=board[current];  
+            }
         } else if (scoreBoard[i] == AIWIZ)
         {
             int rowStart = i-(i%width);
             int colStart = i%width;
-            for(int i = 0; i < width; i++)
-            {
-                int currentHozIndx = rowStart+i;
-                int currentVertIndx = colStart+(i*width);
 
-                if(scoreBoard[currentHozIndx] < YOURWIZ) latestAIScore+=scoreBoard[currentHozIndx];
-                if(scoreBoard[currentVertIndx] < YOURWIZ) latestAIScore+=scoreBoard[currentVertIndx];
+            for(int j = 0; j < width; j++)
+            {
+                int current = i-j;
+                if(current < rowStart) break;
+                if(board[current] == ROCK) break;
+                if(board[current] < NONNUMERICTILES) latestAIScore+=board[current];
             }
 
+            for(int j = 0; j < width; j++)
+            {
+                int current = i+j;
+                if(current >= rowStart+width) break;
+                if(board[current] == ROCK) break;
+                if(board[current] < NONNUMERICTILES) latestAIScore+=board[current];
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i-(j*width);
+                if(current < colStart) break;
+                if(board[current] == ROCK) break;
+                if(board[current] < NONNUMERICTILES) latestAIScore+=board[current];
+            }
+
+            for(int j = 0; j < width; j++)
+            {
+                int current = i+(j*width);
+                if(current > colStart+(width*width)-width) break;
+                if(board[current] == ROCK) break;
+                if(board[current] < NONNUMERICTILES) latestAIScore+=board[current];  
+            }
         }
     }
     playerScore = latestPlayerScore;
