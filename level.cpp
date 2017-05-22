@@ -153,7 +153,18 @@ void Level::makeBoard()
         for(int j = 0; j < width; j ++)
         {
             Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
-            tile->setType(0);
+            tile->setType(EMPTY);
+            tile->setDraggable(false);
+            backBoard.push_back(tile);
+        }
+    }
+
+    for(int i = 0; i < width; i ++)
+    {
+        for(int j = 0; j < width; j ++)
+        {
+            Tile* tile = new Tile(i*81+xOffset, j*81+yOffset, 80, 80);
+            tile->setType(EMPTY);
             tile->setDraggable(false);
             board.push_back(tile);
         }
@@ -212,7 +223,7 @@ void Level::draw(){
     setBackground(100,150,75,0);
     playerScoreText.display(10,10);
     aiScoreText.display(10,50);
-
+    for(int i = 0; i < backBoard.size(); i++)backBoard[i]->display();
     for(int i = 0; i < board.size(); i++)board[i]->display();
     for(int i = 0; i < hand.size(); i++) hand[i]->display();
 

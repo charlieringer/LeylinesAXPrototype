@@ -16,8 +16,17 @@ void Tile::setType(int _tileType)
 		case(EMPTY):
 			tex = Tile::emptyTex;
 			break;
+		case(MINUSONE):
+			tex = Tile::minusoneTex;
+			break;
 		case(MINUSTWO):
 			tex = Tile::minustwoTex;
+			break;
+		case(MINUSTHREE):
+			tex = Tile::minusthreeTex;
+			break;
+		case(MINUSFOUR):
+			tex = Tile::minusfourTex;
 			break;
 		case(ONE):
 			tex = Tile::oneTex;
@@ -31,11 +40,20 @@ void Tile::setType(int _tileType)
 		case(FOUR):
 			tex = Tile::fourTex;
 			break;
+		case(FIVE):
+			tex = Tile::fiveTex;
+			break;
 		case(YOURWIZ):
 			tex = Tile::yourWhizTex;
 			break;
 		case(AIWIZ):
 			tex = Tile::aiWhizTex;
+			break;
+		case(ROCK):
+			tex = Tile::rockTex;
+			break;
+		case(TREE):
+			tex = Tile::treeTex;
 			break;
 	}
 }
@@ -49,22 +67,35 @@ void Tile::loadTextures()
 {
 	emptyTex->loadImage("data/images/0.jpg");
 
-    minustwoTex->loadImage("data/images/1.jpg");
-    oneTex->loadImage("data/images/2.jpg");
-    twoTex->loadImage("data/images/3.jpg");
-    threeTex->loadImage("data/images/4.jpg");
-    fourTex->loadImage("data/images/5.jpg");
+    minusoneTex->loadImage("data/images/minus1.png");
+    minustwoTex->loadImage("data/images/minus2.png");
+    minusthreeTex->loadImage("data/images/minus3.png");
+    minusfourTex->loadImage("data/images/minus4.png");
+    oneTex->loadImage("data/images/1.png");
+    twoTex->loadImage("data/images/2.png");
+    threeTex->loadImage("data/images/3.png");
+    fourTex->loadImage("data/images/4.png");
+    fiveTex->loadImage("data/images/5.png");
 
-    yourWhizTex->loadImage("data/images/6.jpg");
-    aiWhizTex->loadImage("data/images/7.jpg");
+    treeTex->loadImage("data/images/tree.png");
+    rockTex->loadImage("data/images/rock.png");
+
+    yourWhizTex->loadImage("data/images/6.png");
+    aiWhizTex->loadImage("data/images/7.png");
 }
 
 AXTexture* Tile::emptyTex = new AXTexture();
+AXTexture* Tile::minusoneTex = new AXTexture();
 AXTexture* Tile::minustwoTex = new AXTexture();
+AXTexture* Tile::minusthreeTex = new AXTexture();
+AXTexture* Tile::minusfourTex = new AXTexture();
 AXTexture* Tile::oneTex = new AXTexture();
 AXTexture* Tile::twoTex = new AXTexture();
 AXTexture* Tile::threeTex = new AXTexture();
 AXTexture* Tile::fourTex = new AXTexture();
+AXTexture* Tile::fiveTex = new AXTexture();
+AXTexture* Tile::treeTex = new AXTexture();
+AXTexture* Tile::rockTex = new AXTexture();
 AXTexture* Tile::yourWhizTex = new AXTexture();
 AXTexture* Tile::aiWhizTex = new AXTexture();
 

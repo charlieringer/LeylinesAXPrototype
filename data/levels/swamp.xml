@@ -16,40 +16,40 @@
 
 	<SpecialBoardPositions>
 		<location id="7" value="-2"></location>
-		<location id="10" value="-2"></location>
-		<location id="25" value="-2"></location>
+		<location id="10" value="-3"></location>
+		<location id="25" value="-3"></location>
 		<location id="28" value="-2"></location>
 	</SpecialBoardPositions>
 	
 	<PlayerDeckDist>
+		<item Type = "-4"/>
+		<item Type = "-3"/>
 		<item Type = "-2"/>
 		<item Type = "-2"/>
 		<item Type = "-2"/>
-		<item Type = "-2"/>
-		<item Type = "2"/>
-		<item Type = "2"/>
+		<item Type = "-1"/>
+		<item Type = "-1"/>
 		<item Type = "3"/>
 		<item Type = "3"/>
+		<item Type = "3"/>
 		<item Type = "4"/>
 		<item Type = "4"/>
 		<item Type = "4"/>
-		<item Type = "-2"/>
-		<item Type = "-2"/>
 	</PlayerDeckDist>
 
 	<AIDeckDist>
+		<item Type = "-4"/>
+		<item Type = "-3"/>
 		<item Type = "-2"/>
 		<item Type = "-2"/>
 		<item Type = "-2"/>
-		<item Type = "-2"/>
-		<item Type = "2"/>
-		<item Type = "2"/>
+		<item Type = "-1"/>
+		<item Type = "-1"/>
 		<item Type = "3"/>
 		<item Type = "3"/>
+		<item Type = "3"/>
 		<item Type = "4"/>
 		<item Type = "4"/>
 		<item Type = "4"/>
-		<item Type = "-2"/>
-		<item Type = "-2"/>
 	</AIDeckDist>
 </Level>

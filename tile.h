@@ -42,11 +42,19 @@ class Tile
 		AXTexture* tex = nullptr;
 
 		static AXTexture* emptyTex;
+		static AXTexture* minusoneTex;
 		static AXTexture* minustwoTex;
+		static AXTexture* minusthreeTex;
+		static AXTexture* minusfourTex;
 		static AXTexture* oneTex;
 		static AXTexture* twoTex;
 		static AXTexture* threeTex;
 		static AXTexture* fourTex;
+		static AXTexture* fiveTex;
+
+		static AXTexture* treeTex;
+		static AXTexture* rockTex;
+		
 		static AXTexture* yourWhizTex;
 		static AXTexture* aiWhizTex;
 

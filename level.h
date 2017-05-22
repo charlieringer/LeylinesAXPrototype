@@ -23,6 +23,7 @@ class Level
 		int numbAIWiz;
 
 		//Data about the playing pieces
+		vector<Tile*> backBoard;
 		vector<Tile*> board;
 		vector<Tile*> hand;
 		vector<Tile*> aiHand;
