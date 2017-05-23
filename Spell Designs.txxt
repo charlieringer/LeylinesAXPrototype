@@ -1,0 +1,51 @@
+Tiles:
+Rock: Blocks the path
+Tree: Worth 1 or 2 points per Wizard in line with it
+
+Spell Designs:
+
+Block Path:
+Place a rock
+
+Enchant Earth:
+Place a tree
+
+Sunder:
+Remove a tile
+
+Char the ground:
+Choose a tile. Remove that tile and all tiles in a line with it.
+
+Harness Energy:
+Play a 5 point tile
+
+Harness Negative Energy:
+Play a -4 point tile
+
+Poision the soil:
+turn a positive tile to negative
+
+Heal the soil:
+Turn a negative tile to postiive
+
+Promote:
+Choose a Wizard you have played to be your new captain
+
+Teleport:
+Remove a wizard you have played from the board (you can replay)
+
+Rethink:
+Discard your hand and draw a new one
+
+
+
+
+
+Remap the land:
+Swap two tiles.
+
+Changing Winds: 
+Move a Leypoint one space UDLR
+
+Transform Earth
+Cover up a tile with one from your hand

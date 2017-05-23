@@ -93,6 +93,7 @@ void AIState::calculateHueristicScore()
                 int current = i-j;
                 if(current < rowStart) break;
                 if(board[current] == ROCK) break;
+                if(board[current] == TREE) latestPlayerScore+=getTreeValueAt(current);
                 if(board[current] < NONNUMERICTILES) latestPlayerScore+=board[current];
             }
 
@@ -101,6 +102,7 @@ void AIState::calculateHueristicScore()
                 int current = i+j;
                 if(current >= rowStart+width) break;
                 if(board[current] == ROCK) break;
+                if(board[current] == TREE) latestPlayerScore+=getTreeValueAt(current);
                 if(board[current] < NONNUMERICTILES) latestPlayerScore+=board[current];
             }
 
@@ -109,6 +111,7 @@ void AIState::calculateHueristicScore()
                 int current = i-(j*width);
                 if(current < colStart) break;
                 if(board[current] == ROCK) break;
+                if(board[current] == TREE) latestPlayerScore+=getTreeValueAt(current);
                 if(board[current] < NONNUMERICTILES) latestPlayerScore+=board[current];
             }
 
@@ -117,6 +120,7 @@ void AIState::calculateHueristicScore()
                 int current = i+(j*width);
                 if(current > colStart+(width*width)-width) break;
                 if(board[current] == ROCK) break;
+                if(board[current] == TREE) latestPlayerScore+=getTreeValueAt(current);
                 if(board[current] < NONNUMERICTILES) latestPlayerScore+=board[current];  
             }
         } else if (scoreBoard[i] == AIWIZ)
@@ -129,6 +133,7 @@ void AIState::calculateHueristicScore()
                 int current = i-j;
                 if(current < rowStart) break;
                 if(board[current] == ROCK) break;
+                if(board[current] == TREE) latestAIScore+=getTreeValueAt(current);
                 if(board[current] < NONNUMERICTILES) latestAIScore+=board[current];
             }
 
@@ -137,6 +142,7 @@ void AIState::calculateHueristicScore()
                 int current = i+j;
                 if(current >= rowStart+width) break;
                 if(board[current] == ROCK) break;
+                if(board[current] == TREE) latestAIScore+=getTreeValueAt(current);
                 if(board[current] < NONNUMERICTILES) latestAIScore+=board[current];
             }
 
@@ -145,6 +151,7 @@ void AIState::calculateHueristicScore()
                 int current = i-(j*width);
                 if(current < colStart) break;
                 if(board[current] == ROCK) break;
+                if(board[current] == TREE) latestAIScore+=getTreeValueAt(current);
                 if(board[current] < NONNUMERICTILES) latestAIScore+=board[current];
             }
 
@@ -153,12 +160,50 @@ void AIState::calculateHueristicScore()
                 int current = i+(j*width);
                 if(current > colStart+(width*width)-width) break;
                 if(board[current] == ROCK) break;
+                if(board[current] == TREE) latestAIScore+=getTreeValueAt(current);
                 if(board[current] < NONNUMERICTILES) latestAIScore+=board[current];  
             }
         }
     }
     playerScore = latestPlayerScore;
     aiScore = latestAIScore;
+}
+
+int AIState::getTreeValueAt(int postion)
+{
+    int total = 0;
+
+    int rowStart = postion-(postion%width);
+    int colStart = postion%width;
+
+    for(int j = 0; j < width; j++)
+    {
+        int current = postion-j;
+        if(current < rowStart) break;
+        if(board[current] == YOURWIZ || board[current] == AIWIZ) total++;
+    }
+
+    for(int j = 0; j < width; j++)
+    {
+        int current = postion+j;
+        if(current >= rowStart+width) break;
+        if(board[current] == YOURWIZ || board[current] == AIWIZ) total++;
+    }
+
+    for(int j = 0; j < width; j++)
+    {
+        int current = postion-(j*width);
+        if(current < colStart) break;
+        if(board[current] == YOURWIZ || board[current] == AIWIZ) total++;
+    }
+
+    for(int j = 0; j < width; j++)
+    {
+        int current = postion+(j*width);
+        if(current > colStart+(width*width)-width) break;
+        if(board[current] == YOURWIZ || board[current] == AIWIZ) total++; 
+    }
+    return total;
 }
 
 void AIState::removeWorstNChildren(int numbToRemove){ 

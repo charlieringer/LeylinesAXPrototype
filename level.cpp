@@ -47,12 +47,12 @@ Level::Level(string levelfile)
     //Sets the X and Y offsets for the board.
     if(width%2 == 0)
     {
-        xOffset = 520-(81*(width/2))+40;
-        yOffset = 280-(81*(width/2))+40;
+        xOffset = 920-(81*(width/2))+40;
+        yOffset = (AXWindow::getHeight()/2)-(81*(width/2))+40+50;
 
     } else {
-        xOffset = 520-(81*(width/2));
-        yOffset = 280-(81*(width/2));
+        xOffset = 920-(81*(width/2));
+        yOffset = (AXWindow::getHeight()/2)-(81*(width/2))+25;
     }
 
     makeBoard(); 
@@ -106,7 +106,7 @@ void Level::makePlayerHand()
     //You get 4 number tiles
     for(int i = 0; i < 4; i++)
     { 
-        Tile* tile = new Tile(10, 118+(i*81), 80, 80);
+        Tile* tile = new Tile(120, 180+(i*81), 80, 80);
         tile->setType(getNextPlayerTile());
         tile->setDraggable(true);
         hand.push_back(tile);
@@ -115,7 +115,7 @@ void Level::makePlayerHand()
     //And 3 wizards
     for(int i = 0; i < numbPlayerWiz; i++)
     {            
-        Tile* tile = new Tile(10+81, 118+(i*81), 80, 80);
+        Tile* tile = new Tile(500, 180+(i*81), 80, 80);
         tile->setType(YOURWIZ);
         tile->setDraggable(true);
         hand.push_back(tile);
@@ -220,7 +220,7 @@ void Level::update()
 
 void Level::draw(){
     //Set the background colour
-    setBackground(100,150,75,0);
+    //setBackground(100,150,75,0);
     playerScoreText.display(10,10);
     aiScoreText.display(10,50);
     for(int i = 0; i < backBoard.size(); i++)backBoard[i]->display();
@@ -324,6 +324,7 @@ void Level::calculateGameScore()
                 int current = i-j;
                 if(current < rowStart) break;
                 if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() == TREE) latestPlayerScore+=getTreeValueAt(current);
                 if(board[current]->getType() < NONNUMERICTILES) latestPlayerScore+=board[current]->getType();
             }
 
@@ -332,6 +333,7 @@ void Level::calculateGameScore()
                 int current = i+j;
                 if(current >= rowStart+width) break;
                 if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() == TREE) latestPlayerScore+=getTreeValueAt(current);
                 if(board[current]->getType() < NONNUMERICTILES) latestPlayerScore+=board[current]->getType();
             }
 
@@ -340,6 +342,7 @@ void Level::calculateGameScore()
                 int current = i-(j*width);
                 if(current < colStart) break;
                 if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() == TREE) latestPlayerScore+=getTreeValueAt(current);
                 if(board[current]->getType() < NONNUMERICTILES) latestPlayerScore+=board[current]->getType();
                 
             }
@@ -349,6 +352,7 @@ void Level::calculateGameScore()
                 int current = i+(j*width);
                 if(current > colStart+(width*width)-width) break;
                 if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() == TREE) latestPlayerScore+=getTreeValueAt(current);
                 if(board[current]->getType() < NONNUMERICTILES) latestPlayerScore+=board[current]->getType();  
             }
 
@@ -362,6 +366,7 @@ void Level::calculateGameScore()
                 int current = i-j;
                 if(current < rowStart) break;
                 if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() == TREE) latestAIScore+=getTreeValueAt(current);
                 if(board[current]->getType() < NONNUMERICTILES) latestAIScore+=board[current]->getType();
             }
 
@@ -370,6 +375,7 @@ void Level::calculateGameScore()
                 int current = i+j;
                 if(current >= rowStart+width) break;
                 if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() == TREE) latestAIScore+=getTreeValueAt(current);
                 if(board[current]->getType() < NONNUMERICTILES) latestAIScore+=board[current]->getType();
             }
 
@@ -378,6 +384,7 @@ void Level::calculateGameScore()
                 int current = i-(j*width);
                 if(current < colStart) break;
                 if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() == TREE) latestAIScore+=getTreeValueAt(current);
                 if(board[current]->getType() < NONNUMERICTILES) latestAIScore+=board[current]->getType();
             }
 
@@ -386,6 +393,7 @@ void Level::calculateGameScore()
                 int current = i+(j*width);
                 if(current > colStart+(width*width)-width) break;
                 if(board[current]->getType() == ROCK) break;
+                if(board[current]->getType() == TREE) latestAIScore+=getTreeValueAt(current);
                 if(board[current]->getType() < NONNUMERICTILES) latestAIScore+=board[current]->getType();  
             }
         }
@@ -395,6 +403,43 @@ void Level::calculateGameScore()
 
     playerScoreText.setText("Player Score: " + to_string(playerScore), smallFont);
     aiScoreText.setText("AI Score: " + to_string(aiScore), smallFont);
+}
+
+int Level::getTreeValueAt(int postion)
+{
+    int total = 0;
+
+    int rowStart = postion-(postion%width);
+    int colStart = postion%width;
+
+    for(int j = 0; j < width; j++)
+    {
+        int current = postion-j;
+        if(current < rowStart) break;
+        if(board[current]->getType() == YOURWIZ || board[current]->getType() == AIWIZ) total++;
+    }
+
+    for(int j = 0; j < width; j++)
+    {
+        int current = postion+j;
+        if(current >= rowStart+width) break;
+        if(board[current]->getType() == YOURWIZ || board[current]->getType() == AIWIZ) total++;
+    }
+
+    for(int j = 0; j < width; j++)
+    {
+        int current = postion-(j*width);
+        if(current < colStart) break;
+        if(board[current]->getType() == YOURWIZ || board[current]->getType() == AIWIZ) total++;
+    }
+
+    for(int j = 0; j < width; j++)
+    {
+        int current = postion+(j*width);
+        if(current > colStart+(width*width)-width) break;
+        if(board[current]->getType() == YOURWIZ || board[current]->getType() == AIWIZ) total++; 
+    }
+    return total;
 }
 
 void Level::runAI()

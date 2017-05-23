@@ -9,9 +9,12 @@
 using namespace std;
 
 Level* currentLevel;
+AXTexture* background;
 
 void setup()
 {
+    background = new AXTexture();
+    background->loadImage("data/images/background.png");
     //Set the random seed
     srand (time(NULL));
     //Load all of the tile textures
@@ -26,6 +29,7 @@ void update(){
 }
 
 void draw(){
+    drawTexture(background, 0, 0, 1280, 720);
     //Draw the current level
     currentLevel->draw();
 }
@@ -33,7 +37,7 @@ void draw(){
 int main(int argc, char *argv[])
 {
     //Make a new AX Window
-    if(!AXWindow::init(860, 640, "Leyline Prototype", AX_DEFAULT, setup, update, draw)){
+    if(!AXWindow::init(1280, 720, "Leyline Prototype", AX_DEFAULT, setup, update, draw)){
         AXLog::log("Window failed to initialise", "Quitting", AX_LOG_ERROR);
         return -1;
     }

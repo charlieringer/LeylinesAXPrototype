@@ -1,3 +1,4 @@
+#pragma once
 #include <Axilya/AXMain.h>
 #include <algorithm>
 #include <map>
@@ -80,6 +81,8 @@ class Level
 		int getNextAITile();
 		int getTileFromDistribution();
 		int getTileHScore();
+		int getTreeValueAt(int position);
+
 
 	public:	
 		Level(string levelfile);

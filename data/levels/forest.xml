@@ -12,16 +12,14 @@
  PlayerDeckDist & AIDeckDist: What the player's deck looks like
 -->
 
-<Level ID = "meadow" Width= "7" PlayerNumbWiz = "4" AINumbWiz = "4">
+<Level ID = "forest" Width= "5" PlayerNumbWiz = "3" AINumbWiz = "3">
 
 	<SpecialBoardPositions>
-		<location id="16" value="150"></location>
-		<location id="18" value="150"></location>
-
-		<location id="24" value="150"></location>
-
-		<location id="30" value="150"></location>
-		<location id="32" value="150"></location>
+		<location id="1" value="51"></location>
+		<location id="9" value="51"></location>
+		<location id="15" value="51"></location>
+		<location id="23" value="51"></location>
+		<location id="12" value="5"></location>
 	</SpecialBoardPositions>
 	
 	<PlayerDeckDist>

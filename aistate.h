@@ -26,6 +26,7 @@ class AIState
 		vector<int> aihand;
 
 		void calculateHueristicScore();
+		int getTreeValueAt(int postion);
 
 	public:
 	    ~AIState();

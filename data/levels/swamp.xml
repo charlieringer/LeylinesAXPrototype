@@ -12,7 +12,7 @@
  PlayerDeckDist & AIDeckDist: What the player's deck looks like
 -->
 
-<Level ID = "test" Width= "6" PlayerNumbWiz = "4" AINumbWiz = "4">
+<Level ID = "swamp" Width= "6" PlayerNumbWiz = "4" AINumbWiz = "4">
 
 	<SpecialBoardPositions>
 		<location id="7" value="-2"></location>
